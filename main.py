@@ -512,7 +512,14 @@ if __name__ == "__main__":
     global list_csv_name
     list_csv_name = ['Companies.csv', 'Products.csv', 'MainCategory.csv', 'MiddleCategory.csv', 'SubCategory.csv',
                 'Options1.csv', 'Options2.csv']
-
+    #CSV 열 정보. 
+    """
+    ,코드,코드명,회사,품목군,대분류,중분류,소분류,옵션1,옵션2
+    """
+    
+    
+    
+    
     list_csv = ['companies', 'products', 'maincategory', 'middlecategory', 'subcategory',
                 'options1', 'options2']
     global code_log
