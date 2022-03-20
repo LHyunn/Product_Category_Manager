@@ -19,15 +19,11 @@ from PyQt5.QtWidgets import QTableWidgetItem, QAbstractItemView
 
 class Ui_MainWindow(object):
 
-
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1650, 720)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-
-
 
     def setupUi_Companies(self, MainWindow, *item):
 
@@ -43,23 +39,21 @@ class Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(20, 60, 211, 341))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
         self.tableWidget.setAlternatingRowColors(True)
         self.tableWidget.setStyleSheet("color: white;"
-                                         "gridline-color: rgb(255, 255, 255);")
+                                       "gridline-color: rgb(255, 255, 255);")
         df = pd.read_csv(list_csv_name[0])
         self.tableWidget.setColumnCount(2)
         self.tableWidget.setRowCount(50)
         for i in range(0, len(df.index.tolist()), 1):
-            self.comboBox.insertItem(i,str(df.iat[i,2]))
-        for i in range(0,len(df.index.tolist()),1):
+            self.comboBox.insertItem(i, str(df.iat[i, 2]))
+        for i in range(0, len(df.index.tolist()), 1):
             for j in range(1, 3, 1):
                 item = QTableWidgetItem(df.iat[i, j])
-                self.tableWidget.setItem(i, j-1, item)
+                self.tableWidget.setItem(i, j - 1, item)
         self.comboBox.textActivated.connect(print)
         self.comboBox.textActivated.connect(self.company_combobox_changed2)
-
-
 
     def setupUi_Products(self, MainWindow, *item):
         self.comboBox_2 = QtWidgets.QComboBox(self.centralwidget)
@@ -77,13 +71,10 @@ class Ui_MainWindow(object):
         self.tableWidget_2.setStyleSheet("color: white;"
                                          "gridline-color: rgb(255, 255, 255);")
 
-
         self.tableWidget_2.setColumnCount(2)
         self.tableWidget_2.setRowCount(50)
 
         self.comboBox_2.textActivated.connect(self.products_combobox_changed2)
-
-
 
     def setupUi_MainCategory(self, MainWindow, *item):
         self.comboBox_3 = QtWidgets.QComboBox(self.centralwidget)
@@ -199,7 +190,6 @@ class Ui_MainWindow(object):
                                          "gridline-color: rgb(255, 255, 255);")
         self.comboBox_7.textActivated.connect(self.option2_combobox_changed2)
 
-
     def text_log_and_csv_open(self, MainWindow):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -216,7 +206,6 @@ class Ui_MainWindow(object):
         self.label9.setGeometry(QtCore.QRect(1363, 430, 150, 20))
         self.label9.setObjectName("label")
 
-
         MainWindow.setCentralWidget(self.centralwidget)
 
     def csv_list(self, MainWindow):
@@ -228,18 +217,35 @@ class Ui_MainWindow(object):
 
         self.comboBox_8.currentIndexChanged.connect(self.open_csv_file)
 
-    def open_csv_button_clicked(self, csvindex):
-        self.pushButton.clicked.connect(self.open_csv_file)
+    def csv_list2(self, MainWindow):
+        self.comboBox_9 = QtWidgets.QComboBox(self.centralwidget)
+        self.comboBox_9.setGeometry(QtCore.QRect(1063, 470, 131, 31))
+        self.comboBox_9.setObjectName("comboBox_9")
+        for i in range(7):
+            self.comboBox_9.addItem('')
+        self.comboBox_9.activated.connect(self.selectedcsvnumber)
+        self.button1 = QtWidgets.QPushButton(self.centralwidget)
+        self.button1.setObjectName("button1")
+        self.button1.setGeometry(QtCore.QRect(1210, 470, 50, 31))
+        self.button1.setText("저장")
+        self.button1.clicked.connect(lambda:self.button_event(True))
 
-    def open_csv_file(self,csvindex):
-        os.startfile(list_csv_name[csvindex])
+    def selectedcsvnumber(self, index):
+        selected_csv_number = index
+        print(selected_csv_number)
+        return selected_csv_number
+# 이부분 열기 버튼에도 적용해보자
+    def save_button_event(self, bool):
+        if bool:
+            one_text = self.comboBox_9.currentIndex()
+            print(one_text)
 
 
 
 
 
-
-
+    def open_csv_file(self, csvindex):
+        os.startfile(list_csv_name[csvindex-1])
 
     def setupUi_final(self, MainWindow, *item):
         MainWindow.setCentralWidget(self.centralwidget)
@@ -268,13 +274,22 @@ class Ui_MainWindow(object):
         self.tableWidget_7.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         self.label8.setText(_translate("MainWindow", "코드 로그"))
         self.label9.setText(_translate("MainWindow", "CSV 파일 선택"))
-        self.comboBox_8.setItemText(0, _translate("MainWindow", "회사"))
-        self.comboBox_8.setItemText(1, _translate("MainWindow", "품목군"))
-        self.comboBox_8.setItemText(2, _translate("MainWindow", "대분류"))
-        self.comboBox_8.setItemText(3, _translate("MainWindow", "중분류"))
-        self.comboBox_8.setItemText(4, _translate("MainWindow", "소분류"))
-        self.comboBox_8.setItemText(5, _translate("MainWindow", "옵션1"))
-        self.comboBox_8.setItemText(6, _translate("MainWindow", "옵션2"))
+        self.comboBox_8.setItemText(0, _translate("MainWindow", "선택"))
+        self.comboBox_8.setItemText(1, _translate("MainWindow", "회사"))
+        self.comboBox_8.setItemText(2, _translate("MainWindow", "품목군"))
+        self.comboBox_8.setItemText(3, _translate("MainWindow", "대분류"))
+        self.comboBox_8.setItemText(4, _translate("MainWindow", "중분류"))
+        self.comboBox_8.setItemText(5, _translate("MainWindow", "소분류"))
+        self.comboBox_8.setItemText(6, _translate("MainWindow", "옵션1"))
+        self.comboBox_8.setItemText(7, _translate("MainWindow", "옵션2"))
+        self.comboBox_9.setItemText(0, _translate("MainWindow", "선택"))
+        self.comboBox_9.setItemText(1, _translate("MainWindow", "회사"))
+        self.comboBox_9.setItemText(2, _translate("MainWindow", "품목군"))
+        self.comboBox_9.setItemText(3, _translate("MainWindow", "대분류"))
+        self.comboBox_9.setItemText(4, _translate("MainWindow", "중분류"))
+        self.comboBox_9.setItemText(5, _translate("MainWindow", "소분류"))
+        self.comboBox_9.setItemText(6, _translate("MainWindow", "옵션1"))
+        self.comboBox_9.setItemText(7, _translate("MainWindow", "옵션2"))
 
     def cleaner_combobox_tableWidget(self, where):
         if where < 7:
@@ -299,22 +314,21 @@ class Ui_MainWindow(object):
 
 
 
-
-
-
-
-
     def company_combobox_changed2(self, codename):
 
         current_select2 = codename
         df_before = pd.read_csv(list_csv_name[0])
         df_before = df_before.applymap(str)
         df_before = df_before[df_before['코드명'] == current_select2]
-        code = df_before.iat[0,1]
-
+        code = df_before.iat[0, 1]
         df = pd.read_csv(list_csv_name[1])
         df = df.applymap(str)
         df1 = df[df['회사'] == code]
+        #디버깅용
+        print(current_select2)
+        print(df_before)
+        print(code)
+        print(df1)
         self.cleaner_combobox_tableWidget(1)
         for i in range(0, len(df1.index.tolist()), 1):
             self.comboBox_2.insertItem(i, str(df1.iat[i, 2]))
@@ -323,6 +337,12 @@ class Ui_MainWindow(object):
                 item = QTableWidgetItem(df1.iat[i, j])
                 self.tableWidget_2.setItem(i, j - 1, item)
         self.code_logging(1, code)
+
+        #기능 구현 - 테이블을 수정했다면 그 수정한 값을 엑셀에 추가.
+
+
+
+
 
     def products_combobox_changed2(self, codename):
         current_select2 = codename
@@ -333,6 +353,11 @@ class Ui_MainWindow(object):
         df = pd.read_csv(list_csv_name[2])
         df = df.applymap(str)
         df1 = df[df['품목군코드'] == code]
+        # 디버깅용
+        print(current_select2)
+        print(df_before)
+        print(code)
+        print(df1)
         self.cleaner_combobox_tableWidget(2)
         for i in range(0, len(df1.index.tolist()), 1):
             self.comboBox_3.insertItem(i, str(df1.iat[i, 2]))
@@ -351,7 +376,11 @@ class Ui_MainWindow(object):
         df = pd.read_csv(list_csv_name[3])
         df = df.applymap(str)
         df1 = df[df['대분류코드'] == code]
-
+        # 디버깅용
+        print(current_select2)
+        print(df_before)
+        print(code)
+        print(df1)
         self.cleaner_combobox_tableWidget(3)
         for i in range(0, len(df1.index.tolist()), 1):
             self.comboBox_4.insertItem(i, str(df1.iat[i, 2]))
@@ -370,6 +399,7 @@ class Ui_MainWindow(object):
         df = pd.read_csv(list_csv_name[4])
         df = df.applymap(str)
         df1 = df[df['중분류코드'] == code]
+        # 디버깅용
         print(current_select2)
         print(df_before)
         print(code)
@@ -382,6 +412,7 @@ class Ui_MainWindow(object):
                 item = QTableWidgetItem(df1.iat[i, j])
                 self.tableWidget_5.setItem(i, j - 1, item)
         self.code_logging(4, code)
+
     def subcategory_combobox_changed2(self, codename):
         current_select2 = codename
         df_before = pd.read_csv(list_csv_name[4])
@@ -391,6 +422,7 @@ class Ui_MainWindow(object):
         df = pd.read_csv(list_csv_name[5])
         df = df.applymap(str)
         df1 = df[df['소분류코드'] == code]
+        # 디버깅용
         print(current_select2)
         print(df_before)
         print(code)
@@ -403,6 +435,7 @@ class Ui_MainWindow(object):
                 item = QTableWidgetItem(str(df1.iat[i, j]))
                 self.tableWidget_6.setItem(i, j - 1, item)
         self.code_logging(5, code)
+
     def option1_combobox_changed2(self, codename):
         current_select2 = codename
         df_before = pd.read_csv(list_csv_name[5])
@@ -412,6 +445,7 @@ class Ui_MainWindow(object):
         df = pd.read_csv(list_csv_name[6])
         df = df.applymap(str)
         df1 = df[df['옵션1'] == code]
+        # 디버깅용
         print(current_select2)
         print(df_before)
         print(code)
@@ -425,18 +459,15 @@ class Ui_MainWindow(object):
                 self.tableWidget_7.setItem(i, j - 1, item)
         self.code_logging(6, code)
 
+
+
     def option2_combobox_changed2(self, codename):
         current_select2 = codename
         df_before = pd.read_csv(list_csv_name[5])
         df_before = df_before.applymap(str)
         df_before = df_before[df_before['코드명'] == current_select2]
         code = df_before.iat[0, 1]
-        self.code_logging(7,code)
-
-                
-    
-
- 
+        self.code_logging(7, code)
 
     def code_logging(self, where, code):
         if where == 1:
@@ -495,35 +526,25 @@ class Ui_MainWindow(object):
             code_log[6] = code
             result = ' '.join(s for s in code_log)
             self.textEdit.setText(result)
-                                
-                                
-                                
-
-
-
-
 
 
 if __name__ == "__main__":
     import sys
 
-
     global list_csv
     global list_csv_name
+    global selected_csv_number
     list_csv_name = ['Companies.csv', 'Products.csv', 'MainCategory.csv', 'MiddleCategory.csv', 'SubCategory.csv',
-                'Options1.csv', 'Options2.csv']
-    #CSV 열 정보. 
+                     'Options1.csv', 'Options2.csv']
+    # CSV 열 정보.
     """
     ,코드,코드명,회사,품목군,대분류,중분류,소분류,옵션1,옵션2
     """
-    
-    
-    
-    
+
     list_csv = ['companies', 'products', 'maincategory', 'middlecategory', 'subcategory',
                 'options1', 'options2']
     global code_log
-    code_log = ['1','2','3','4','5','6','7']
+    code_log = ['1', '2', '3', '4', '5', '6', '7']
     global code_log_reset
     code_log_reset = ['', '', '', '', '', '', '']
 
@@ -532,15 +553,13 @@ if __name__ == "__main__":
     font.setFamily("IBM Plex Sans KR Light")
     app.setFont(font)
 
-
-
     MainWindow = QtWidgets.QMainWindow()
-
 
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     ui.text_log_and_csv_open(MainWindow)
     ui.csv_list(MainWindow)
+    ui.csv_list2(MainWindow)
     ui.setupUi_Companies(MainWindow)
     ui.setupUi_Products(MainWindow)
     ui.setupUi_MainCategory(MainWindow)
