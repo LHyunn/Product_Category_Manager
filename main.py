@@ -24,6 +24,15 @@ class Ui_MainWindow(object):
         MainWindow.resize(1650, 720)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        self.label11 = QtWidgets.QLabel(self.centralwidget)
+        self.label11.setGeometry(QtCore.QRect(1550, 650, 150, 20))
+        self.label11.setObjectName("label")
+        self.label11.setAlignment(QtCore.Qt.AlignCenter)
+        self.tableWidget99 = QtWidgets.QTableWidget(self.centralwidget)
+        self.tableWidget99.setRowCount(1)
+        self.tableWidget99.setColumnCount(1) #이부분 tableWidget의 none값의 타입을 모르겠고 인터넷에서도 관련 문서를 찾을 수가 없어서 이렇게 나둠. 비어있는지 비교하기 위한 값.
+        self.tableWidget99.hide()
+        
 
     def setupUi_Companies(self, MainWindow, *item):
 
@@ -36,6 +45,9 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setFont(font)
+
+
+
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(20, 60, 211, 341))
         self.tableWidget.setObjectName("tableWidget")
@@ -47,11 +59,15 @@ class Ui_MainWindow(object):
         self.tableWidget.setColumnCount(2)
         self.tableWidget.setRowCount(50)
         for i in range(0, len(df.index.tolist()), 1):
-            self.comboBox.insertItem(i, str(df.iat[i, 2]))
+            if str(df.iat[i, 2]) != 'nan':
+                self.comboBox.insertItem(i, str(df.iat[i, 2]))
         for i in range(0, len(df.index.tolist()), 1):
             for j in range(1, 3, 1):
-                item = QTableWidgetItem(df.iat[i, j])
-                self.tableWidget.setItem(i, j - 1, item)
+                if str(df.iat[i, j]) != 'nan':
+                    item = QTableWidgetItem(str(df.iat[i, j]))
+                    self.tableWidget.setItem(i, j - 1, item)
+
+
         self.comboBox.textActivated.connect(print)
         self.comboBox.textActivated.connect(self.company_combobox_changed2)
 
@@ -88,8 +104,7 @@ class Ui_MainWindow(object):
         self.tableWidget_3 = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget_3.setGeometry(QtCore.QRect(480, 60, 211, 341))
         self.tableWidget_3.setObjectName("tableWidget_2")
-        self.tableWidget_3.setColumnCount(0)
-        self.tableWidget_3.setRowCount(0)
+
         self.tableWidget_3.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tableWidget_3.setAlternatingRowColors(True)
         self.tableWidget_3.setStyleSheet("color: white;"
@@ -202,8 +217,6 @@ class Ui_MainWindow(object):
         self.label8.setGeometry(QtCore.QRect(40, 430, 80, 20))
         self.label8.setObjectName("label")
 
-
-
         MainWindow.setCentralWidget(self.centralwidget)
 
     def csv_list(self, MainWindow):
@@ -238,6 +251,10 @@ class Ui_MainWindow(object):
         self.button1.setText("저장")
         self.button1.clicked.connect(lambda:self.save_button_event(True))
 
+        # 기능 구현 - 테이블을 수정했다면 그 수정한 값을 엑셀에 추가.
+
+
+
     def selectedcsvnumber(self, index):
         selected_csv_number = index
         print(selected_csv_number)
@@ -245,14 +262,43 @@ class Ui_MainWindow(object):
 
     def save_button_event(self, bool):
         if bool:
-            csvindex = self.comboBox_9.currentIndex()
+            csvindex = self.comboBox_9.currentIndex() - 1#선택 인덱스 제거
+            if csvindex == 0:#회사 파트라면
+                df = pd.read_csv(list_csv_name[csvindex]) #원본
+                tablerow = df.index
+
+                print(df)
+                i = 0
+                while self.tableWidget.item(i, 1) != self.tableWidget99.item(0, 0):
+                    print(self.tableWidget.item(i,0).text())
+                    print(self.tableWidget.item(i,1).text())
+                    df.at[i, 'index'] = i
+                    df.at[i,'코드'] = self.tableWidget.item(i,0).text()
+                    df.at[i,'코드명'] = self.tableWidget.item(i,1).text()
+                    i = i + 1
+
+                df.astype({'index':'int'})
+                print(df)
+                df.to_csv('Companies.csv', index = False)
+
+
             #저장하는 코드
             print(csvindex)
 
+    def csv_save_with_change(self, index):
+        csvindex = index
+        if csvindex == 0:
+            print(index)
+
+
+            #마지막 수정
+
+
+
     def open_button_event(self, bool):
         if bool:
-            csvindex = self.comboBox_9.currentIndex()
-            os.startfile(list_csv_name[csvindex-1])
+            csvindex = self.comboBox_9.currentIndex() - 1
+            os.startfile(list_csv_name[csvindex])
 
     def setupUi_final(self, MainWindow, *item):
         MainWindow.setCentralWidget(self.centralwidget)
@@ -280,8 +326,9 @@ class Ui_MainWindow(object):
         self.tableWidget_6.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         self.tableWidget_7.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         self.label8.setText(_translate("MainWindow", "코드 로그"))
-        self.label9.setText(_translate("MainWindow", "CSV 파일 선택"))
-        self.label10.setText(_translate("MainWindow", "저장할 위치 선택"))
+        self.label10.setText(_translate("MainWindow", "CSV 파일 열기"))
+        self.label9.setText(_translate("MainWindow", "저장할 위치 선택"))
+        self.label11.setText(_translate("MainWindow", "v1.0.4"))
         self.comboBox_8.setItemText(0, _translate("MainWindow", "선택"))
         self.comboBox_8.setItemText(1, _translate("MainWindow", "회사"))
         self.comboBox_8.setItemText(2, _translate("MainWindow", "품목군"))
@@ -338,15 +385,17 @@ class Ui_MainWindow(object):
         print(code)
         print(df1)
         self.cleaner_combobox_tableWidget(1)
-        for i in range(0, len(df1.index.tolist()), 1):
-            self.comboBox_2.insertItem(i, str(df1.iat[i, 2]))
-        for i in range(0, len(df1.index.tolist()), 1):
+        for i in range(0, len(df.index.tolist()), 1):
+            if str(df.iat[i, 2]) != 'nan':
+                self.comboBox_2.insertItem(i, str(df.iat[i, 2]))
+        for i in range(0, len(df.index.tolist()), 1):
             for j in range(1, 3, 1):
-                item = QTableWidgetItem(df1.iat[i, j])
-                self.tableWidget_2.setItem(i, j - 1, item)
+                if str(df.iat[i, j]) != 'nan':
+                    item = QTableWidgetItem(str(df.iat[i, j]))
+                    self.tableWidget_2.setItem(i, j - 1, item)
         self.code_logging(1, code)
 
-        #기능 구현 - 테이블을 수정했다면 그 수정한 값을 엑셀에 추가.
+
 
 
 
@@ -362,17 +411,20 @@ class Ui_MainWindow(object):
         df = df.applymap(str)
         df1 = df[df['품목군코드'] == code]
         # 디버깅용
+
         print(current_select2)
         print(df_before)
         print(code)
         print(df1)
         self.cleaner_combobox_tableWidget(2)
-        for i in range(0, len(df1.index.tolist()), 1):
-            self.comboBox_3.insertItem(i, str(df1.iat[i, 2]))
-        for i in range(0, len(df1.index.tolist()), 1):
+        for i in range(0, len(df.index.tolist()), 1):
+            if str(df.iat[i, 2]) != 'nan':
+                self.comboBox_3.insertItem(i, str(df.iat[i, 2]))
+        for i in range(0, len(df.index.tolist()), 1):
             for j in range(1, 3, 1):
-                item = QTableWidgetItem(df1.iat[i, j])
-                self.tableWidget_3.setItem(i, j - 1, item)
+                if str(df.iat[i, j]) != 'nan':
+                    item = QTableWidgetItem(str(df.iat[i, j]))
+                    self.tableWidget_3.setItem(i, j - 1, item)
         self.code_logging(2, code)
 
     def maincategory_combobox_changed2(self, codename):
@@ -390,12 +442,14 @@ class Ui_MainWindow(object):
         print(code)
         print(df1)
         self.cleaner_combobox_tableWidget(3)
-        for i in range(0, len(df1.index.tolist()), 1):
-            self.comboBox_4.insertItem(i, str(df1.iat[i, 2]))
-        for i in range(0, len(df1.index.tolist()), 1):
+        for i in range(0, len(df.index.tolist()), 1):
+            if str(df.iat[i, 2]) != 'nan':
+                self.comboBox_4.insertItem(i, str(df.iat[i, 2]))
+        for i in range(0, len(df.index.tolist()), 1):
             for j in range(1, 3, 1):
-                item = QTableWidgetItem(df1.iat[i, j])
-                self.tableWidget_4.setItem(i, j - 1, item)
+                if str(df.iat[i, j]) != 'nan':
+                    item = QTableWidgetItem(str(df.iat[i, j]))
+                    self.tableWidget_4.setItem(i, j - 1, item)
         self.code_logging(3, code)
 
     def middlecategory_combobox_changed2(self, codename):
@@ -413,12 +467,14 @@ class Ui_MainWindow(object):
         print(code)
         print(df1)
         self.cleaner_combobox_tableWidget(4)
-        for i in range(0, len(df1.index.tolist()), 1):
-            self.comboBox_5.insertItem(i, str(df1.iat[i, 2]))
-        for i in range(0, len(df1.index.tolist()), 1):
+        for i in range(0, len(df.index.tolist()), 1):
+            if str(df.iat[i, 2]) != 'nan':
+                self.comboBox_5.insertItem(i, str(df.iat[i, 2]))
+        for i in range(0, len(df.index.tolist()), 1):
             for j in range(1, 3, 1):
-                item = QTableWidgetItem(df1.iat[i, j])
-                self.tableWidget_5.setItem(i, j - 1, item)
+                if str(df.iat[i, j]) != 'nan':
+                    item = QTableWidgetItem(str(df.iat[i, j]))
+                    self.tableWidget_5.setItem(i, j - 1, item)
         self.code_logging(4, code)
 
     def subcategory_combobox_changed2(self, codename):
@@ -436,12 +492,14 @@ class Ui_MainWindow(object):
         print(code)
         print(df1)
         self.cleaner_combobox_tableWidget(5)
-        for i in range(0, len(df1.index.tolist()), 1):
-            self.comboBox_6.insertItem(i, str(df1.iat[i, 2]))
-        for i in range(0, len(df1.index.tolist()), 1):
+        for i in range(0, len(df.index.tolist()), 1):
+            if str(df.iat[i, 2]) != 'nan':
+                self.comboBox_6.insertItem(i, str(df.iat[i, 2]))
+        for i in range(0, len(df.index.tolist()), 1):
             for j in range(1, 3, 1):
-                item = QTableWidgetItem(str(df1.iat[i, j]))
-                self.tableWidget_6.setItem(i, j - 1, item)
+                if str(df.iat[i, j]) != 'nan':
+                    item = QTableWidgetItem(str(df.iat[i, j]))
+                    self.tableWidget_6.setItem(i, j - 1, item)
         self.code_logging(5, code)
 
     def option1_combobox_changed2(self, codename):
@@ -459,12 +517,14 @@ class Ui_MainWindow(object):
         print(code)
         print(df1)
         self.cleaner_combobox_tableWidget(6)
-        for i in range(0, len(df1.index.tolist()), 1):
-            self.comboBox_7.insertItem(i, str(df1.iat[i, 2]))
-        for i in range(0, len(df1.index.tolist()), 1):
+        for i in range(0, len(df.index.tolist()), 1):
+            if str(df.iat[i, 2]) != 'nan':
+                self.comboBox_7.insertItem(i, str(df.iat[i, 2]))
+        for i in range(0, len(df.index.tolist()), 1):
             for j in range(1, 3, 1):
-                item = QTableWidgetItem(str(df1.iat[i, j]))
-                self.tableWidget_7.setItem(i, j - 1, item)
+                if str(df.iat[i, j]) != 'nan':
+                    item = QTableWidgetItem(str(df.iat[i, j]))
+                    self.tableWidget_7.setItem(i, j - 1, item)
         self.code_logging(6, code)
 
 
