@@ -202,22 +202,30 @@ class Ui_MainWindow(object):
         self.label8.setGeometry(QtCore.QRect(40, 430, 80, 20))
         self.label8.setObjectName("label")
 
-        self.label9 = QtWidgets.QLabel(self.centralwidget)
-        self.label9.setGeometry(QtCore.QRect(1363, 430, 150, 20))
-        self.label9.setObjectName("label")
+
 
         MainWindow.setCentralWidget(self.centralwidget)
 
     def csv_list(self, MainWindow):
+        self.label10 = QtWidgets.QLabel(self.centralwidget)
+        self.label10.setGeometry(QtCore.QRect(1363, 430, 150, 20))
+        self.label10.setObjectName("label")
         self.comboBox_8 = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox_8.setGeometry(QtCore.QRect(1363, 470, 131, 31))
         self.comboBox_8.setObjectName("comboBox_8")
         for i in range(7):
             self.comboBox_8.addItem('')
-
-        self.comboBox_8.currentIndexChanged.connect(self.open_csv_file)
+        self.comboBox_8.activated.connect(self.selectedcsvnumber)
+        self.button2 = QtWidgets.QPushButton(self.centralwidget)
+        self.button2.setObjectName("button1")
+        self.button2.setGeometry(QtCore.QRect(1510, 470, 50, 31))
+        self.button2.setText("열기")
+        self.button2.clicked.connect(lambda: self.open_button_event(True))
 
     def csv_list2(self, MainWindow):
+        self.label9 = QtWidgets.QLabel(self.centralwidget)
+        self.label9.setGeometry(QtCore.QRect(1063, 430, 150, 20))
+        self.label9.setObjectName("label")
         self.comboBox_9 = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox_9.setGeometry(QtCore.QRect(1063, 470, 131, 31))
         self.comboBox_9.setObjectName("comboBox_9")
@@ -228,24 +236,23 @@ class Ui_MainWindow(object):
         self.button1.setObjectName("button1")
         self.button1.setGeometry(QtCore.QRect(1210, 470, 50, 31))
         self.button1.setText("저장")
-        self.button1.clicked.connect(lambda:self.button_event(True))
+        self.button1.clicked.connect(lambda:self.save_button_event(True))
 
     def selectedcsvnumber(self, index):
         selected_csv_number = index
         print(selected_csv_number)
         return selected_csv_number
-# 이부분 열기 버튼에도 적용해보자
+
     def save_button_event(self, bool):
         if bool:
-            one_text = self.comboBox_9.currentIndex()
-            print(one_text)
+            csvindex = self.comboBox_9.currentIndex()
+            #저장하는 코드
+            print(csvindex)
 
-
-
-
-
-    def open_csv_file(self, csvindex):
-        os.startfile(list_csv_name[csvindex-1])
+    def open_button_event(self, bool):
+        if bool:
+            csvindex = self.comboBox_9.currentIndex()
+            os.startfile(list_csv_name[csvindex-1])
 
     def setupUi_final(self, MainWindow, *item):
         MainWindow.setCentralWidget(self.centralwidget)
@@ -274,6 +281,7 @@ class Ui_MainWindow(object):
         self.tableWidget_7.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         self.label8.setText(_translate("MainWindow", "코드 로그"))
         self.label9.setText(_translate("MainWindow", "CSV 파일 선택"))
+        self.label10.setText(_translate("MainWindow", "저장할 위치 선택"))
         self.comboBox_8.setItemText(0, _translate("MainWindow", "선택"))
         self.comboBox_8.setItemText(1, _translate("MainWindow", "회사"))
         self.comboBox_8.setItemText(2, _translate("MainWindow", "품목군"))
