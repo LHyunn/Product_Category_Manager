@@ -34,6 +34,10 @@ class Ui_mainWindow(object):
         self.horizontalFrame = QtWidgets.QFrame(self.centralwidget)
         self.horizontalFrame.setGeometry(QtCore.QRect(0, 10, 1280, 781))
         self.horizontalFrame.setObjectName("horizontalFrame")
+        self.tableWidget99 = QtWidgets.QTableWidget(self.centralwidget)
+        self.tableWidget99.setRowCount(1)
+        self.tableWidget99.setColumnCount(1)  # 이부분 tableWidget의 none값의 타입을 모르겠고 인터넷에서도 관련 문서를 찾을 수가 없어서 이렇게 나둠. 비어있는지 비교하기 위한 값.
+        self.tableWidget99.hide()
 
 
         self.Frame_1 = QtWidgets.QFrame(self.horizontalFrame)
@@ -51,7 +55,7 @@ class Ui_mainWindow(object):
         self.tableWidget.setAlternatingRowColors(True)
         self.tableWidget.resizeColumnToContents(True)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.cellClicked.connect(self.company_combobox_changed2)
+        self.tableWidget.cellClicked.connect(self.company_tablewidget_changed2)
 
         self.company_tablewidget_set()
 
@@ -70,7 +74,7 @@ class Ui_mainWindow(object):
         self.tableWidget_2.setAlternatingRowColors(True)
         self.tableWidget_2.resizeColumnToContents(True)
         self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_2.cellClicked.connect(self.products_combobox_changed2)
+        self.tableWidget_2.cellClicked.connect(self.products_tablewidget_changed2)
 
         self.Frame_3 = QtWidgets.QFrame(self.horizontalFrame)
         self.Frame_3.setGeometry(QtCore.QRect(10, 550, 511, 231))
@@ -87,7 +91,7 @@ class Ui_mainWindow(object):
         self.tableWidget_3.setAlternatingRowColors(True)
         self.tableWidget_3.resizeColumnToContents(True)
         self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_3.cellClicked.connect(self.maincategory_combobox_changed2)
+        self.tableWidget_3.cellClicked.connect(self.maincategory_tablewidget_changed2)
 
 
         self.Frame_4 = QtWidgets.QFrame(self.horizontalFrame)
@@ -105,7 +109,7 @@ class Ui_mainWindow(object):
         self.tableWidget_4.setAlternatingRowColors(True)
         self.tableWidget_4.resizeColumnToContents(True)
         self.tableWidget_4.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_4.cellClicked.connect(self.middlecategory_combobox_changed2)
+        self.tableWidget_4.cellClicked.connect(self.middlecategory_tablewidget_changed2)
 
         self.Frame_5 = QtWidgets.QFrame(self.horizontalFrame)
         self.Frame_5.setGeometry(QtCore.QRect(540, 430, 351, 351))
@@ -122,7 +126,7 @@ class Ui_mainWindow(object):
         self.tableWidget_5.setAlternatingRowColors(True)
         self.tableWidget_5.resizeColumnToContents(True)
         self.tableWidget_5.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_5.cellClicked.connect(self.subcategory_combobox_changed2)
+        self.tableWidget_5.cellClicked.connect(self.subcategory_tablewidget_changed2)
 
 
 
@@ -145,7 +149,7 @@ class Ui_mainWindow(object):
         self.tableWidget_6.setAlternatingRowColors(True)
         self.tableWidget_6.resizeColumnToContents(True)
         self.tableWidget_6.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_6.cellClicked.connect(self.option1_combobox_changed2)
+        self.tableWidget_6.cellClicked.connect(self.option1_tablewidget_changed2)
 
 
         self.Frame_7 = QtWidgets.QFrame(self.horizontalFrame)
@@ -163,7 +167,7 @@ class Ui_mainWindow(object):
         self.tableWidget_7.setAlternatingRowColors(True)
         self.tableWidget_7.resizeColumnToContents(True)
         self.tableWidget_7.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_7.cellClicked.connect(self.option2_combobox_changed2)
+        self.tableWidget_7.cellClicked.connect(self.option2_tablewidget_changed2)
 
 
         self.label_8 = QtWidgets.QLabel(self.horizontalFrame)
@@ -265,167 +269,187 @@ class Ui_mainWindow(object):
 
 
 
-    def company_combobox_changed2(self):
-        row = self.tableWidget.currentIndex().row() 
-        codename = self.tableWidget.item(row, 1).text()
-        self.cleaner_combobox_tableWidget(1)
-        current_select2 = codename
-        df_before = pd.read_csv(list_csv_name[0])
-        df_before = df_before.applymap(str)
-        df_before = df_before[df_before['코드명'] == current_select2]
-        code = df_before.iat[0, 1]
-        df = pd.read_csv(list_csv_name[1])
-        df = df.applymap(str)
-        df1 = df[df['회사'] == code]
-        #디버깅용
-        print(current_select2)
-        print(df_before)
-        print(code)
-        print(df1)
-        for i in range(0, len(df1.index.tolist()), 1):
-            for j in range(1, 3, 1):
-                if str(df1.iat[i, j]) != 'nan':
-                    item = QTableWidgetItem(str(df1.iat[i, j]))
-                    self.tableWidget_2.setItem(i, j - 1, item)
-        self.code_logging(1, code)
-        self.code_name_logging(1, codename)
+    def company_tablewidget_changed2(self):
 
-    def products_combobox_changed2(self):
+        row = self.tableWidget.currentIndex().row()
+        if self.tableWidget.item(row,1) != self.tableWidget99.item(1,1):
+            codename = self.tableWidget.item(row, 1).text()
+            self.cleaner_combobox_tableWidget(1)
+            current_select2 = codename
+            df_before = pd.read_csv(list_csv_name[0])
+            df_before = df_before.applymap(str)
+            df_before = df_before[df_before['코드명'] == current_select2]
+            code = df_before.iat[0, 1]
+            df = pd.read_csv(list_csv_name[1])
+            df = df.applymap(str)
+            df1 = df[df['회사'] == code]
+            print(current_select2)
+            print(df_before)
+            print(code)
+            print(df1)
+            for i in range(0, len(df1.index.tolist()), 1):
+                for j in range(1, 3, 1):
+                    if str(df1.iat[i, j]) != 'nan':
+                        item = QTableWidgetItem(str(df1.iat[i, j]))
+                        self.tableWidget_2.setItem(i, j - 1, item)
+            self.code_logging(1, code)
+            self.code_name_logging(1, codename)
+        else:
+            self.cleaner_combobox_tableWidget(1)
+
+
+    def products_tablewidget_changed2(self):
         row = self.tableWidget_2.currentIndex().row()
-        codename = self.tableWidget_2.item(row, 1).text()
-        current_select2 = codename
-        df_before = pd.read_csv(list_csv_name[1])
-        df_before = df_before.applymap(str)
-        df_before = df_before[df_before['코드명'] == current_select2]
-        code = df_before.iat[0, 1]
-        df = pd.read_csv(list_csv_name[2])
-        df = df.applymap(str)
-        df1 = df[df['품목군코드'] == code]
-        # 디버깅용
+        if self.tableWidget_2.item(row, 1) != self.tableWidget99.item(1, 1):
+            codename = self.tableWidget_2.item(row, 1).text()
+            current_select2 = codename
+            df_before = pd.read_csv(list_csv_name[1])
+            df_before = df_before.applymap(str)
+            df_before = df_before[df_before['코드명'] == current_select2]
+            code = df_before.iat[0, 1]
+            df = pd.read_csv(list_csv_name[2])
+            df = df.applymap(str)
+            df1 = df[df['품목군코드'] == code]
+            # 디버깅용
 
-        print(current_select2)
-        print(df_before)
-        print(code)
-        print(df1)
-        self.cleaner_combobox_tableWidget(2)
-        for i in range(0, len(df1.index.tolist()), 1):
-            for j in range(1, 3, 1):
-                if str(df1.iat[i, j]) != 'nan':
-                    item = QTableWidgetItem(str(df1.iat[i, j]))
-                    self.tableWidget_3.setItem(i, j - 1, item)
-        self.code_logging(2, code)
-        self.code_name_logging(2, codename)
+            print(current_select2)
+            print(df_before)
+            print(code)
+            print(df1)
+            self.cleaner_combobox_tableWidget(2)
+            for i in range(0, len(df1.index.tolist()), 1):
+                for j in range(1, 3, 1):
+                    if str(df1.iat[i, j]) != 'nan':
+                        item = QTableWidgetItem(str(df1.iat[i, j]))
+                        self.tableWidget_3.setItem(i, j - 1, item)
+            self.code_logging(2, code)
+            self.code_name_logging(2, codename)
+        else:
+            self.cleaner_combobox_tableWidget(2)
 
-    def maincategory_combobox_changed2(self):
+    def maincategory_tablewidget_changed2(self):
         row = self.tableWidget_3.currentIndex().row()
-        codename = self.tableWidget_3.item(row, 1).text()
-        current_select2 = codename
-        df_before = pd.read_csv(list_csv_name[2])
-        df_before = df_before.applymap(str)
-        df_before = df_before[df_before['코드명'] == current_select2]
-        code = df_before.iat[0, 1]
-        df = pd.read_csv(list_csv_name[3])
-        df = df.applymap(str)
-        df1 = df[df['대분류코드'] == code]
-        # 디버깅용
-        print(current_select2)
-        print(df_before)
-        print(code)
-        print(df1)
-        self.cleaner_combobox_tableWidget(3)
-        for i in range(0, len(df1.index.tolist()), 1):
-            for j in range(1, 3, 1):
-                if str(df1.iat[i, j]) != 'nan':
-                    item = QTableWidgetItem(str(df1.iat[i, j]))
-                    self.tableWidget_4.setItem(i, j - 1, item)
-        self.code_logging(3, code)
-        self.code_name_logging(3, codename)
+        if self.tableWidget_3.item(row, 1) != self.tableWidget99.item(1, 1):
+            codename = self.tableWidget_3.item(row, 1).text()
+            current_select2 = codename
+            df_before = pd.read_csv(list_csv_name[2])
+            df_before = df_before.applymap(str)
+            df_before = df_before[df_before['코드명'] == current_select2]
+            code = df_before.iat[0, 1]
+            df = pd.read_csv(list_csv_name[3])
+            df = df.applymap(str)
+            df1 = df[df['대분류코드'] == code]
+            # 디버깅용
+            print(current_select2)
+            print(df_before)
+            print(code)
+            print(df1)
+            self.cleaner_combobox_tableWidget(3)
+            for i in range(0, len(df1.index.tolist()), 1):
+                for j in range(1, 3, 1):
+                    if str(df1.iat[i, j]) != 'nan':
+                        item = QTableWidgetItem(str(df1.iat[i, j]))
+                        self.tableWidget_4.setItem(i, j - 1, item)
+            self.code_logging(3, code)
+            self.code_name_logging(3, codename)
+        else:
+            self.cleaner_combobox_tableWidget(3)
 
-    def middlecategory_combobox_changed2(self):
+    def middlecategory_tablewidget_changed2(self):
         row = self.tableWidget_4.currentIndex().row()
-        codename = self.tableWidget_4.item(row, 1).text()
-        current_select2 = codename
-        df_before = pd.read_csv(list_csv_name[3])
-        df_before = df_before.applymap(str)
-        df_before = df_before[df_before['코드명'] == current_select2]
-        code = df_before.iat[0, 1]
-        df = pd.read_csv(list_csv_name[4])
-        df = df.applymap(str)
-        df1 = df[df['중분류코드'] == code]
-        # 디버깅용
-        print(current_select2)
-        print(df_before)
-        print(code)
-        print(df1)
-        self.cleaner_combobox_tableWidget(4)
-        for i in range(0, len(df1.index.tolist()), 1):
-            for j in range(1, 3, 1):
-                if str(df1.iat[i, j]) != 'nan':
-                    item = QTableWidgetItem(str(df1.iat[i, j]))
-                    self.tableWidget_5.setItem(i, j - 1, item)
-        self.code_logging(4, code)
-        self.code_name_logging(4, codename)
+        if self.tableWidget_4.item(row, 1) != self.tableWidget99.item(1, 1):
+            codename = self.tableWidget_4.item(row, 1).text()
+            current_select2 = codename
+            df_before = pd.read_csv(list_csv_name[3])
+            df_before = df_before.applymap(str)
+            df_before = df_before[df_before['코드명'] == current_select2]
+            code = df_before.iat[0, 1]
+            df = pd.read_csv(list_csv_name[4])
+            df = df.applymap(str)
+            df1 = df[df['중분류코드'] == code]
+            # 디버깅용
+            print(current_select2)
+            print(df_before)
+            print(code)
+            print(df1)
+            self.cleaner_combobox_tableWidget(4)
+            for i in range(0, len(df1.index.tolist()), 1):
+                for j in range(1, 3, 1):
+                    if str(df1.iat[i, j]) != 'nan':
+                        item = QTableWidgetItem(str(df1.iat[i, j]))
+                        self.tableWidget_5.setItem(i, j - 1, item)
+            self.code_logging(4, code)
+            self.code_name_logging(4, codename)
+        else:
+            self.cleaner_combobox_tableWidget(4)
 
-    def subcategory_combobox_changed2(self):
+    def subcategory_tablewidget_changed2(self):
         row = self.tableWidget_5.currentIndex().row()
-        codename = self.tableWidget_5.item(row, 1).text()
-        current_select2 = codename
-        df_before = pd.read_csv(list_csv_name[4])
-        df_before = df_before.applymap(str)
-        df_before = df_before[df_before['코드명'] == current_select2]
-        code = df_before.iat[0, 1]
-        df = pd.read_csv(list_csv_name[5])
-        df = df.applymap(str)
-        df1 = df[df['소분류코드'] == code]
-        # 디버깅용
-        print(current_select2)
-        print(df_before)
-        print(code)
-        print(df1)
-        self.cleaner_combobox_tableWidget(5)
-        for i in range(0, len(df1.index.tolist()), 1):
-            for j in range(1, 3, 1):
-                if str(df1.iat[i, j]) != 'nan':
-                    item = QTableWidgetItem(str(df1.iat[i, j]))
-                    self.tableWidget_6.setItem(i, j - 1, item)
-        self.code_logging(5, code)
-        self.code_name_logging(5, codename)
+        if self.tableWidget_5.item(row, 1) != self.tableWidget99.item(1, 1):
+            codename = self.tableWidget_5.item(row, 1).text()
+            current_select2 = codename
+            df_before = pd.read_csv(list_csv_name[4])
+            df_before = df_before.applymap(str)
+            df_before = df_before[df_before['코드명'] == current_select2]
+            code = df_before.iat[0, 1]
+            df = pd.read_csv(list_csv_name[5])
+            df = df.applymap(str)
+            df1 = df[df['소분류코드'] == code]
+            # 디버깅용
+            print(current_select2)
+            print(df_before)
+            print(code)
+            print(df1)
+            self.cleaner_combobox_tableWidget(5)
+            for i in range(0, len(df1.index.tolist()), 1):
+                for j in range(1, 3, 1):
+                    if str(df1.iat[i, j]) != 'nan':
+                        item = QTableWidgetItem(str(df1.iat[i, j]))
+                        self.tableWidget_6.setItem(i, j - 1, item)
+            self.code_logging(5, code)
+            self.code_name_logging(5, codename)
+        else:
+            self.cleaner_combobox_tableWidget(5)
 
-    def option1_combobox_changed2(self):
+    def option1_tablewidget_changed2(self):
         row = self.tableWidget_6.currentIndex().row()
-        codename = self.tableWidget_6.item(row, 1).text()
-        current_select2 = codename
-        df_before = pd.read_csv(list_csv_name[5])
-        df_before = df_before.applymap(str)
-        df_before = df_before[df_before['코드명'] == current_select2]
-        code = df_before.iat[0, 1]
-        df = pd.read_csv(list_csv_name[6])
-        df = df.applymap(str)
-        df1 = df[df['옵션1'] == code]
-        # 디버깅용
-        print(current_select2)
-        print(df_before)
-        print(code)
-        print(df1)
-        self.cleaner_combobox_tableWidget(6)
-        for i in range(0, len(df1.index.tolist()), 1):
-            for j in range(1, 3, 1):
-                if str(df1.iat[i, j]) != 'nan':
-                    item = QTableWidgetItem(str(df1.iat[i, j]))
-                    self.tableWidget_7.setItem(i, j - 1, item)
-        self.code_logging(6, code)
-        self.code_name_logging(6, codename)
+        if self.tableWidget_6.item(row, 1) != self.tableWidget99.item(1, 1):
+            codename = self.tableWidget_6.item(row, 1).text()
+            current_select2 = codename
+            df_before = pd.read_csv(list_csv_name[5])
+            df_before = df_before.applymap(str)
+            df_before = df_before[df_before['코드명'] == current_select2]
+            code = df_before.iat[0, 1]
+            df = pd.read_csv(list_csv_name[6])
+            df = df.applymap(str)
+            df1 = df[df['옵션1'] == code]
+            # 디버깅용
+            print(current_select2)
+            print(df_before)
+            print(code)
+            print(df1)
+            self.cleaner_combobox_tableWidget(6)
+            for i in range(0, len(df1.index.tolist()), 1):
+                for j in range(1, 3, 1):
+                    if str(df1.iat[i, j]) != 'nan':
+                        item = QTableWidgetItem(str(df1.iat[i, j]))
+                        self.tableWidget_7.setItem(i, j - 1, item)
+            self.code_logging(6, code)
+            self.code_name_logging(6, codename)
+        else:
+            self.cleaner_combobox_tableWidget(6)
 
-    def option2_combobox_changed2(self):
+    def option2_tablewidget_changed2(self):
         row = self.tableWidget_7.currentIndex().row()
-        codename = self.tableWidget_7.item(row, 1).text()
-        current_select2 = codename
-        df_before = pd.read_csv(list_csv_name[5])
-        df_before = df_before.applymap(str)
-        df_before = df_before[df_before['코드명'] == current_select2]
-        code = df_before.iat[0, 1]
-        self.code_logging(7, code)
-        self.code_name_logging(7, codename)
+        if self.tableWidget_7.item(row, 1) != self.tableWidget99.item(1, 1):
+            codename = self.tableWidget_7.item(row, 1).text()
+            current_select2 = codename
+            df_before = pd.read_csv(list_csv_name[5])
+            df_before = df_before.applymap(str)
+            df_before = df_before[df_before['코드명'] == current_select2]
+            code = df_before.iat[0, 1]
+            self.code_logging(7, code)
+            self.code_name_logging(7, codename)
     def csv_list(self, MainWindow):
 
         _translate = QtCore.QCoreApplication.translate
