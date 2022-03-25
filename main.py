@@ -55,6 +55,7 @@ class Ui_mainWindow(object):
         self.tableWidget.setAlternatingRowColors(True)
         self.tableWidget.resizeColumnToContents(True)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableWidget.cellClicked.connect(self.company_tablewidget_changed2)
 
         self.company_tablewidget_set()
@@ -74,6 +75,7 @@ class Ui_mainWindow(object):
         self.tableWidget_2.setAlternatingRowColors(True)
         self.tableWidget_2.resizeColumnToContents(True)
         self.tableWidget_2.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_2.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableWidget_2.cellClicked.connect(self.products_tablewidget_changed2)
 
         self.Frame_3 = QtWidgets.QFrame(self.horizontalFrame)
@@ -91,6 +93,7 @@ class Ui_mainWindow(object):
         self.tableWidget_3.setAlternatingRowColors(True)
         self.tableWidget_3.resizeColumnToContents(True)
         self.tableWidget_3.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_3.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableWidget_3.cellClicked.connect(self.maincategory_tablewidget_changed2)
 
 
@@ -109,6 +112,7 @@ class Ui_mainWindow(object):
         self.tableWidget_4.setAlternatingRowColors(True)
         self.tableWidget_4.resizeColumnToContents(True)
         self.tableWidget_4.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_4.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableWidget_4.cellClicked.connect(self.middlecategory_tablewidget_changed2)
 
         self.Frame_5 = QtWidgets.QFrame(self.horizontalFrame)
@@ -126,6 +130,7 @@ class Ui_mainWindow(object):
         self.tableWidget_5.setAlternatingRowColors(True)
         self.tableWidget_5.resizeColumnToContents(True)
         self.tableWidget_5.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_5.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableWidget_5.cellClicked.connect(self.subcategory_tablewidget_changed2)
 
 
@@ -149,6 +154,7 @@ class Ui_mainWindow(object):
         self.tableWidget_6.setAlternatingRowColors(True)
         self.tableWidget_6.resizeColumnToContents(True)
         self.tableWidget_6.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableWidget_6.cellClicked.connect(self.option1_tablewidget_changed2)
 
 
@@ -167,6 +173,7 @@ class Ui_mainWindow(object):
         self.tableWidget_7.setAlternatingRowColors(True)
         self.tableWidget_7.resizeColumnToContents(True)
         self.tableWidget_7.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_7.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableWidget_7.cellClicked.connect(self.option2_tablewidget_changed2)
 
 
@@ -198,20 +205,59 @@ class Ui_mainWindow(object):
 	                                  "background-color: white;"
 	                                  "border: 2px solid rgb(58, 134, 255);"
 	                                  "border-radius: 20px;")
+
+
+
+
         self.pushButton_3 = QtWidgets.QPushButton(self.horizontalFrame)
         self.pushButton_3.setGeometry(QtCore.QRect(770, 20, 131, 41))
-        self.pushButton_3.setAutoDefault(False)
-        self.pushButton_3.setDefault(False)
-        self.pushButton_3.setFlat(False)
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_3.setStyleSheet("color: rgb(58, 134, 255);"
 	                                    "background-color: white;"
 	                                    "border: 2px solid rgb(58, 134, 255);"
 	                                    "border-radius: 20px;")
+        self.pushButton_3.setCheckable(True)
+        self.pushButton_3.clicked.connect(self.changeColor)
+
 
         mainWindow.setCentralWidget(self.centralwidget)
         self.retranslateUi(mainWindow)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
+
+    def changeColor(self):
+
+        # if button is checked
+        if self.pushButton_3.isChecked():
+
+            # setting background color to light-blue
+            self.pushButton_3.setStyleSheet("color: white;"
+	                                  "background-color: rgb(58, 134, 255);"
+	                                  "border-radius: 20px;")
+            self.pushButton_3.setText("수정 모드 켜짐")
+            self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
+            self.tableWidget_2.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
+            self.tableWidget_3.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
+            self.tableWidget_4.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
+            self.tableWidget_5.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
+            self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
+            self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
+
+        # if it is unchecked
+        else:
+
+            # set background color back to light-grey
+            self.pushButton_3.setStyleSheet("color: rgb(58, 134, 255);"
+	                                    "background-color: white;"
+	                                    "border: 2px solid rgb(58, 134, 255);"
+	                                    "border-radius: 20px;")
+            self.pushButton_3.setText("수정 모드 꺼짐")
+            self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.tableWidget_2.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.tableWidget_3.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.tableWidget_4.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.tableWidget_5.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
     def retranslateUi(self, mainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -226,7 +272,7 @@ class Ui_mainWindow(object):
         self.label_8.setText(_translate("mainWindow", "품목 코드"))
         self.label_9.setText(_translate("mainWindow", "품목명 코드"))
         self.pushButton.setText(_translate("mainWindow", "CSV 파일 열기"))
-        self.pushButton_3.setText(_translate("mainWindow", "수정 모드"))
+        self.pushButton_3.setText(_translate("mainWindow", "수정 모드 꺼짐"))
         self.comboBox.setItemText(0, _translate("MainWindow", "선택"))
         self.comboBox.setItemText(1, _translate("MainWindow", "회사"))
         self.comboBox.setItemText(2, _translate("MainWindow", "품목군"))
@@ -457,7 +503,7 @@ class Ui_mainWindow(object):
         self.comboBox.clear()
         self.comboBox.setIconSize
         for i in range(8):
-            self.comboBox.insertItem(i, 'Item')
+            self.comboBox.insertItem(i,list_option[i])
         #self.comboBox.activated.connect(self.selectedcsvnumber)
         #self.button2.clicked.connect(lambda: self.open_button_event(True))
 
