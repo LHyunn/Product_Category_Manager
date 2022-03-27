@@ -240,7 +240,7 @@ class Ui_mainWindow(object):
             self.tableWidget_4.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
             self.tableWidget_5.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
             self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
-            self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
+            self.tableWidget_7.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
 
             self.statusbar.showMessage("수정 가능한 상태")
 
@@ -259,8 +259,24 @@ class Ui_mainWindow(object):
             self.tableWidget_4.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.tableWidget_5.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-            self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.tableWidget_7.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.statusbar.showMessage("수정 완료")
+            self.modify_mode_company()
+            if code_log[0] != ' ':
+                self.modify_mode_product()
+                if code_log[1] != ' ':
+                    self.modify_mode_maincategory()
+                    if code_log[2] != ' ':
+                        self.modify_mode_middlecategory()
+                        if code_log[3] != ' ':
+                            self.modify_mode_subcategory()
+                            if code_log[4] != ' ':
+                                self.modify_mode_option1()
+                                if code_log[5] != ' ':
+                                    self.modify_mode_option2()
+
+            self.cleaner_combobox_tableWidget(0)
+            self.company_tablewidget_set()
 
     def retranslateUi(self, mainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -315,199 +331,219 @@ class Ui_mainWindow(object):
 
 
     def company_tablewidget_changed2(self):
-
-        row = self.tableWidget.currentIndex().row()
-        if self.tableWidget.item(row,1) != self.tableWidget99.item(1,1):
-            codename = self.tableWidget.item(row, 1).text()
-            self.cleaner_combobox_tableWidget(1)
-            current_select2 = codename
-            df_before = pd.read_csv(list_csv_name[0])
-            df_before = df_before.applymap(str)
-            df_before = df_before[df_before['코드명'] == current_select2]
-            code = df_before.iat[0, 1]
-            df = pd.read_csv(list_csv_name[1])
-            df = df.applymap(str)
-            df1 = df[df['회사'] == code]
-            print(current_select2)
-            print(df_before)
-            print(code)
-            print(df1)
-            for i in range(0, len(df1.index.tolist()), 1):
-                for j in range(1, 3, 1):
-                    if str(df1.iat[i, j]) != 'nan':
-                        item = QTableWidgetItem(str(df1.iat[i, j]))
-                        self.tableWidget_2.setItem(i, j - 1, item)
-            self.code_logging(1, code)
-            self.code_name_logging(1, codename)
-            status = "회사 선택 : " + str(codename) +" 목록"
-            self.statusbar.showMessage(status)
+        if self.pushButton_3.isChecked():
+            print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
-            self.cleaner_combobox_tableWidget(1)
+            row = self.tableWidget.currentIndex().row()
+            if self.tableWidget.item(row,1) != self.tableWidget99.item(1,1):
+                codename = self.tableWidget.item(row, 1).text()
+                self.cleaner_combobox_tableWidget(1)
+                current_select2 = codename
+                df_before = pd.read_csv(list_csv_name[0])
+                df_before = df_before.applymap(str)
+                df_before = df_before[df_before['코드명'] == current_select2]
+                code = df_before.iat[0, 1]
+                df = pd.read_csv(list_csv_name[1])
+                df = df.applymap(str)
+                df1 = df[df['회사'] == code]
+                print(current_select2)
+                print(df_before)
+                print(code)
+                print(df1)
+                for i in range(0, len(df1.index.tolist()), 1):
+                    for j in range(1, 3, 1):
+                        if str(df1.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                            self.tableWidget_2.setItem(i, j - 1, item)
+                self.code_logging(1, code)
+                self.code_name_logging(1, codename)
+                status = "회사 선택 : " + str(codename) +" 목록"
+                self.statusbar.showMessage(status)
+            else:
+                self.cleaner_combobox_tableWidget(1)
 
     def products_tablewidget_changed2(self):
-        row = self.tableWidget_2.currentIndex().row()
-        if self.tableWidget_2.item(row, 1) != self.tableWidget99.item(1, 1):
-            codename = self.tableWidget_2.item(row, 1).text()
-            current_select2 = codename
-            df_before = pd.read_csv(list_csv_name[1])
-            df_before = df_before.applymap(str)
-            df_before = df_before[df_before['코드명'] == current_select2]
-            code = df_before.iat[0, 1]
-            df = pd.read_csv(list_csv_name[2])
-            df = df.applymap(str)
-            df1 = df[df['품목군코드'] == code]
-            # 디버깅용
-
-            print(current_select2)
-            print(df_before)
-            print(code)
-            print(df1)
-            self.cleaner_combobox_tableWidget(2)
-            for i in range(0, len(df1.index.tolist()), 1):
-                for j in range(1, 3, 1):
-                    if str(df1.iat[i, j]) != 'nan':
-                        item = QTableWidgetItem(str(df1.iat[i, j]))
-                        self.tableWidget_3.setItem(i, j - 1, item)
-            self.code_logging(2, code)
-            self.code_name_logging(2, codename)
-            status = "품목군 선택 : " + str(codename) + " 목록"
-            self.statusbar.showMessage(status)
+        if self.pushButton_3.isChecked():
+            print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
-            self.cleaner_combobox_tableWidget(2)
+            row = self.tableWidget_2.currentIndex().row()
+            if self.tableWidget_2.item(row, 1) != self.tableWidget99.item(1, 1):
+                codename = self.tableWidget_2.item(row, 1).text()
+                current_select2 = codename
+                df_before = pd.read_csv(list_csv_name[1])
+                df_before = df_before.applymap(str)
+                df_before = df_before[df_before['코드명'] == current_select2]
+                code = df_before.iat[0, 1]
+                df = pd.read_csv(list_csv_name[2])
+                df = df.applymap(str)
+                df1 = df[df['품목군코드'] == code]
+                # 디버깅용
+
+                print(current_select2)
+                print(df_before)
+                print(code)
+                print(df1)
+                self.cleaner_combobox_tableWidget(2)
+                for i in range(0, len(df1.index.tolist()), 1):
+                    for j in range(1, 3, 1):
+                        if str(df1.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                            self.tableWidget_3.setItem(i, j - 1, item)
+                self.code_logging(2, code)
+                self.code_name_logging(2, codename)
+                status = "품목군 선택 : " + str(codename) + " 목록"
+                self.statusbar.showMessage(status)
+            else:
+                self.cleaner_combobox_tableWidget(2)
 
     def maincategory_tablewidget_changed2(self):
-        row = self.tableWidget_3.currentIndex().row()
-        if self.tableWidget_3.item(row, 1) != self.tableWidget99.item(1, 1):
-            codename = self.tableWidget_3.item(row, 1).text()
-            current_select2 = codename
-            df_before = pd.read_csv(list_csv_name[2])
-            df_before = df_before.applymap(str)
-            df_before = df_before[df_before['코드명'] == current_select2]
-            code = df_before.iat[0, 1]
-            df = pd.read_csv(list_csv_name[3])
-            df = df.applymap(str)
-            df1 = df[df['대분류코드'] == code]
-            # 디버깅용
-            print(current_select2)
-            print(df_before)
-            print(code)
-            print(df1)
-            self.cleaner_combobox_tableWidget(3)
-            for i in range(0, len(df1.index.tolist()), 1):
-                for j in range(1, 3, 1):
-                    if str(df1.iat[i, j]) != 'nan':
-                        item = QTableWidgetItem(str(df1.iat[i, j]))
-                        self.tableWidget_4.setItem(i, j - 1, item)
-            self.code_logging(3, code)
-            self.code_name_logging(3, codename)
-            status = "대분류 선택 : " + str(codename) + " 목록"
-            self.statusbar.showMessage(status)
+        if self.pushButton_3.isChecked():
+            print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
-            self.cleaner_combobox_tableWidget(3)
+            row = self.tableWidget_3.currentIndex().row()
+            if self.tableWidget_3.item(row, 1) != self.tableWidget99.item(1, 1):
+                codename = self.tableWidget_3.item(row, 1).text()
+                current_select2 = codename
+                df_before = pd.read_csv(list_csv_name[2])
+                df_before = df_before.applymap(str)
+                df_before = df_before[df_before['코드명'] == current_select2]
+                code = df_before.iat[0, 1]
+                df = pd.read_csv(list_csv_name[3])
+                df = df.applymap(str)
+                df1 = df[df['대분류코드'] == code]
+                # 디버깅용
+                print(current_select2)
+                print(df_before)
+                print(code)
+                print(df1)
+                self.cleaner_combobox_tableWidget(3)
+                for i in range(0, len(df1.index.tolist()), 1):
+                    for j in range(1, 3, 1):
+                        if str(df1.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                            self.tableWidget_4.setItem(i, j - 1, item)
+                self.code_logging(3, code)
+                self.code_name_logging(3, codename)
+                status = "대분류 선택 : " + str(codename) + " 목록"
+                self.statusbar.showMessage(status)
+            else:
+                self.cleaner_combobox_tableWidget(3)
 
     def middlecategory_tablewidget_changed2(self):
-        row = self.tableWidget_4.currentIndex().row()
-        if self.tableWidget_4.item(row, 1) != self.tableWidget99.item(1, 1):
-            codename = self.tableWidget_4.item(row, 1).text()
-            current_select2 = codename
-            df_before = pd.read_csv(list_csv_name[3])
-            df_before = df_before.applymap(str)
-            df_before = df_before[df_before['코드명'] == current_select2]
-            code = df_before.iat[0, 1]
-            df = pd.read_csv(list_csv_name[4])
-            df = df.applymap(str)
-            df1 = df[df['중분류코드'] == code]
-            # 디버깅용
-            print(current_select2)
-            print(df_before)
-            print(code)
-            print(df1)
-            self.cleaner_combobox_tableWidget(4)
-            for i in range(0, len(df1.index.tolist()), 1):
-                for j in range(1, 3, 1):
-                    if str(df1.iat[i, j]) != 'nan':
-                        item = QTableWidgetItem(str(df1.iat[i, j]))
-                        self.tableWidget_5.setItem(i, j - 1, item)
-            self.code_logging(4, code)
-            self.code_name_logging(4, codename)
-            status = "중분류 선택 : " + str(codename) + " 목록"
-            self.statusbar.showMessage(status)
+        if self.pushButton_3.isChecked():
+            print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
-            self.cleaner_combobox_tableWidget(4)
+            row = self.tableWidget_4.currentIndex().row()
+            if self.tableWidget_4.item(row, 1) != self.tableWidget99.item(1, 1):
+                codename = self.tableWidget_4.item(row, 1).text()
+                current_select2 = codename
+                df_before = pd.read_csv(list_csv_name[3])
+                df_before = df_before.applymap(str)
+                df_before = df_before[df_before['코드명'] == current_select2]
+                code = df_before.iat[0, 1]
+                df = pd.read_csv(list_csv_name[4])
+                df = df.applymap(str)
+                df1 = df[df['중분류코드'] == code]
+                # 디버깅용
+                print(current_select2)
+                print(df_before)
+                print(code)
+                print(df1)
+                self.cleaner_combobox_tableWidget(4)
+                for i in range(0, len(df1.index.tolist()), 1):
+                    for j in range(1, 3, 1):
+                        if str(df1.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                            self.tableWidget_5.setItem(i, j - 1, item)
+                self.code_logging(4, code)
+                self.code_name_logging(4, codename)
+                status = "중분류 선택 : " + str(codename) + " 목록"
+                self.statusbar.showMessage(status)
+            else:
+                self.cleaner_combobox_tableWidget(4)
 
     def subcategory_tablewidget_changed2(self):
-        row = self.tableWidget_5.currentIndex().row()
-        if self.tableWidget_5.item(row, 1) != self.tableWidget99.item(1, 1):
-            codename = self.tableWidget_5.item(row, 1).text()
-            current_select2 = codename
-            df_before = pd.read_csv(list_csv_name[4])
-            df_before = df_before.applymap(str)
-            df_before = df_before[df_before['코드명'] == current_select2]
-            code = df_before.iat[0, 1]
-            df = pd.read_csv(list_csv_name[5])
-            df = df.applymap(str)
-            df1 = df[df['소분류코드'] == code]
-            # 디버깅용
-            print(current_select2)
-            print(df_before)
-            print(code)
-            print(df1)
-            self.cleaner_combobox_tableWidget(5)
-            for i in range(0, len(df1.index.tolist()), 1):
-                for j in range(1, 3, 1):
-                    if str(df1.iat[i, j]) != 'nan':
-                        item = QTableWidgetItem(str(df1.iat[i, j]))
-                        self.tableWidget_6.setItem(i, j - 1, item)
-            self.code_logging(5, code)
-            self.code_name_logging(5, codename)
-            status = "소분류 선택 : " + str(codename) + " 목록"
-            self.statusbar.showMessage(status)
+        if self.pushButton_3.isChecked():
+            print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
-            self.cleaner_combobox_tableWidget(5)
+            row = self.tableWidget_5.currentIndex().row()
+            if self.tableWidget_5.item(row, 1) != self.tableWidget99.item(1, 1):
+                codename = self.tableWidget_5.item(row, 1).text()
+                current_select2 = codename
+                df_before = pd.read_csv(list_csv_name[4])
+                df_before = df_before.applymap(str)
+                df_before = df_before[df_before['코드명'] == current_select2]
+                code = df_before.iat[0, 1]
+                df = pd.read_csv(list_csv_name[5])
+                df = df.applymap(str)
+                df1 = df[df['소분류코드'] == code]
+                # 디버깅용
+                print(current_select2)
+                print(df_before)
+                print(code)
+                print(df1)
+                self.cleaner_combobox_tableWidget(5)
+                for i in range(0, len(df1.index.tolist()), 1):
+                    for j in range(1, 3, 1):
+                        if str(df1.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                            self.tableWidget_6.setItem(i, j - 1, item)
+                self.code_logging(5, code)
+                self.code_name_logging(5, codename)
+                status = "소분류 선택 : " + str(codename) + " 목록"
+                self.statusbar.showMessage(status)
+            else:
+                self.cleaner_combobox_tableWidget(5)
 
     def option1_tablewidget_changed2(self):
-        row = self.tableWidget_6.currentIndex().row()
-        if self.tableWidget_6.item(row, 1) != self.tableWidget99.item(1, 1):
-            codename = self.tableWidget_6.item(row, 1).text()
-            current_select2 = codename
-            df_before = pd.read_csv(list_csv_name[5])
-            df_before = df_before.applymap(str)
-            df_before = df_before[df_before['코드명'] == current_select2]
-            code = df_before.iat[0, 1]
-            df = pd.read_csv(list_csv_name[6])
-            df = df.applymap(str)
-            df1 = df[df['옵션1'] == code]
-            # 디버깅용
-            print(current_select2)
-            print(df_before)
-            print(code)
-            print(df1)
-            self.cleaner_combobox_tableWidget(6)
-            for i in range(0, len(df1.index.tolist()), 1):
-                for j in range(1, 3, 1):
-                    if str(df1.iat[i, j]) != 'nan':
-                        item = QTableWidgetItem(str(df1.iat[i, j]))
-                        self.tableWidget_7.setItem(i, j - 1, item)
-            self.code_logging(6, code)
-            self.code_name_logging(6, codename)
-            status = "옵션1 선택 : " + str(codename) + " 목록"
-            self.statusbar.showMessage(status)
+        if self.pushButton_3.isChecked():
+            print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
-            self.cleaner_combobox_tableWidget(6)
+            row = self.tableWidget_6.currentIndex().row()
+            if self.tableWidget_6.item(row, 1) != self.tableWidget99.item(1, 1):
+                codename = self.tableWidget_6.item(row, 1).text()
+                current_select2 = codename
+                df_before = pd.read_csv(list_csv_name[5])
+                df_before = df_before.applymap(str)
+                df_before = df_before[df_before['코드명'] == current_select2]
+                code = df_before.iat[0, 1]
+                df = pd.read_csv(list_csv_name[6])
+                df = df.applymap(str)
+                df1 = df[df['옵션1'] == code]
+                # 디버깅용
+                print(current_select2)
+                print(df_before)
+                print(code)
+                print(df1)
+                self.cleaner_combobox_tableWidget(6)
+                for i in range(0, len(df1.index.tolist()), 1):
+                    for j in range(1, 3, 1):
+                        if str(df1.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                            self.tableWidget_7.setItem(i, j - 1, item)
+                self.code_logging(6, code)
+                self.code_name_logging(6, codename)
+                status = "옵션1 선택 : " + str(codename) + " 목록"
+                self.statusbar.showMessage(status)
+            else:
+                self.cleaner_combobox_tableWidget(6)
 
     def option2_tablewidget_changed2(self):
-        row = self.tableWidget_7.currentIndex().row()
-        if self.tableWidget_7.item(row, 1) != self.tableWidget99.item(1, 1):
-            codename = self.tableWidget_7.item(row, 1).text()
-            current_select2 = codename
-            df_before = pd.read_csv(list_csv_name[5])
-            df_before = df_before.applymap(str)
-            df_before = df_before[df_before['코드명'] == current_select2]
-            code = df_before.iat[0, 1]
-            self.code_logging(7, code)
-            self.code_name_logging(7, codename)
-            status = "옵션2 선택 : " + str(codename)
-            self.statusbar.showMessage(status)
+        if self.pushButton_3.isChecked():
+            print("수정 중이라 다음 테이블에 띄우지 않음.")
+        else:
+            row = self.tableWidget_7.currentIndex().row()
+            if self.tableWidget_7.item(row, 1) != self.tableWidget99.item(1, 1):
+                codename = self.tableWidget_7.item(row, 1).text()
+                current_select2 = codename
+                df_before = pd.read_csv(list_csv_name[5])
+                df_before = df_before.applymap(str)
+                df_before = df_before[df_before['코드명'] == current_select2]
+                code = df_before.iat[0, 1]
+                self.code_logging(7, code)
+                self.code_name_logging(7, codename)
+                status = "옵션2 선택 : " + str(codename)
+                self.statusbar.showMessage(status)
     def csv_list(self, MainWindow):
 
         _translate = QtCore.QCoreApplication.translate
@@ -642,73 +678,154 @@ class Ui_mainWindow(object):
             self.statusbar.showMessage(status)
 
     def modify_mode_company(self):
-        Companiesdf = pd.read_csv(list_csv_name[0])
         new_df = pd.read_csv("case.csv")
-        Productsdf = pd.read_csv(list_csv_name[1])
-        code_company_of_product = Productsdf[Productsdf['회사'] == code_log[0]]  # 원래 테이블, = 수정 전 tablewidget과 같음.
-        index_code_company_of_product = Productsdf[Productsdf['회사'] == code_log[0]].index
-        Productsdf.drop(index_code_company_of_product, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
-        i=0
-        while self.tableWidget_7.item(i, 1) != self.tableWidget99.item(0, 0):
+        i = 0
+        while self.tableWidget.item(i, 1) != self.tableWidget99.item(0, 0):
             print(self.tableWidget.item(i, 0).text())
             print(self.tableWidget.item(i, 1).text())
             new_df.at[i, 'index'] = i
-            new_df.at[i, '코드'] = self.tableWidget_7.item(i, 0).text()
-            new_df.at[i, '코드명'] = self.tableWidget_7.item(i, 1).text()
-            i=i+1
-
-
-
+            new_df.at[i, '코드'] = self.tableWidget.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget.item(i, 1).text()
+            i = i + 1
+        new_df.to_csv("Companies.csv", index=False)
 
     def modify_mode_product(self):
+
+        new_df = pd.read_csv("case.csv")
+        productsdf = pd.read_csv(list_csv_name[1]) #  csv 파일 원본
+        code_company_of_product = productsdf[productsdf['회사'] == code_log[0]]  # 원본에서 해당 코드 선택된 상태, = 수정 전 tablewidget과 같음. #백업용
+        index_code_company_of_product = productsdf[productsdf['회사'] == code_log[0]].index # 삭제를 위해 인덱스 추출
+        productsdf.drop(index_code_company_of_product, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
+        i=0
+        while self.tableWidget_2.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_2.item(i, 0).text())
+            print(self.tableWidget_2.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_2.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_2.item(i, 1).text()
+            new_df.at[i,'회사'] = code_log[0]
+            i=i+1
+        print(new_df)
+        productsdf = pd.concat([productsdf, new_df],ignore_index=True)
+        print(productsdf)
+        productsdf.to_csv("Products.csv",index=False)
+
     def modify_mode_maincategory(self):
+
+        new_df = pd.read_csv("case.csv")
+        Maincategorydf = pd.read_csv(list_csv_name[2])  # csv 파일 원본
+        code_product_of_maincategory = Maincategorydf[Maincategorydf['품목군코드'] == code_log[1]]
+        index_code_product_of_maincategory = Maincategorydf[Maincategorydf['품목군코드'] == code_log[1]].index  # 삭제를 위해 인덱스 추출
+        Maincategorydf.drop(index_code_product_of_maincategory, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
+        i = 0
+        while self.tableWidget_3.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_3.item(i, 0).text())
+            print(self.tableWidget_3.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_3.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_3.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            i = i + 1
+        print(new_df)
+        Maincategorydf = pd.concat([Maincategorydf, new_df], ignore_index=True)
+        print(Maincategorydf)
+        Maincategorydf.to_csv("MainCategory.csv", index=False)
+
     def modify_mode_middlecategory(self):
+
+        new_df = pd.read_csv("case.csv")
+        Middlecategorydf = pd.read_csv(list_csv_name[3])  # csv 파일 원본
+        code_maincateogry_of_middlecategory = Middlecategorydf[Middlecategorydf['대분류코드'] == code_log[2]]
+        index_code_maincateogry_of_middlecategory = Middlecategorydf[Middlecategorydf['대분류코드'] == code_log[2]].index  # 삭제를 위해 인덱스 추출
+        print(index_code_maincateogry_of_middlecategory)
+        Middlecategorydf.drop(index_code_maincateogry_of_middlecategory, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
+        i = 0
+        while self.tableWidget_4.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_4.item(i, 0).text())
+            print(self.tableWidget_4.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_4.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_4.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            new_df.at[i, '대분류코드'] = code_log[2]
+            i = i + 1
+        print(new_df)
+        Middlecategorydf = pd.concat([Middlecategorydf, new_df], ignore_index=True)
+        print(Middlecategorydf)
+        Middlecategorydf.to_csv("MiddleCategory.csv", index=False)
+
     def modify_mode_subcategory(self):
+        new_df = pd.read_csv("case.csv")
+        Subcategorydf = pd.read_csv(list_csv_name[4])  # csv 파일 원본
+        code_middlecateogry_of_subcategory = Subcategorydf[Subcategorydf['중분류코드'] == code_log[3]]
+        index_code_middlecateogry_of_subcategory = Subcategorydf[Subcategorydf['중분류코드'] == code_log[3]].index  # 삭제를 위해 인덱스 추출
+        Subcategorydf.drop(index_code_middlecateogry_of_subcategory, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
+        i = 0
+        while self.tableWidget_5.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_5.item(i, 0).text())
+            print(self.tableWidget_5.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_5.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_5.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            new_df.at[i, '대분류코드'] = code_log[2]
+            new_df.at[i, '중분류코드'] = code_log[3]
+            i = i + 1
+        print(new_df)
+        Subcategorydf = pd.concat([Subcategorydf, new_df], ignore_index=True)
+        print(Subcategorydf)
+        Subcategorydf.to_csv("SubCategory.csv", index=False)
     def modify_mode_option1(self):
+        new_df = pd.read_csv("case.csv")
+        Option1df = pd.read_csv(list_csv_name[5])  # csv 파일 원본
+        code_subcategory_of_option1 = Option1df[Option1df['소분류코드'] == code_log[4]]
+        index_code_subcategory_of_option1 = Option1df[Option1df['소분류코드'] == code_log[4]].index  # 삭제를 위해 인덱스 추출
+        Option1df.drop(index_code_subcategory_of_option1, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
+        i = 0
+        while self.tableWidget_6.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_6.item(i, 0).text())
+            print(self.tableWidget_6.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_6.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_6.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            new_df.at[i, '대분류코드'] = code_log[2]
+            new_df.at[i, '중분류코드'] = code_log[3]
+            new_df.at[i, '소분류코드'] = code_log[4]
+            i = i + 1
+        print(new_df)
+        Option1df = pd.concat([Option1df, new_df], ignore_index=True)
+        print(Option1df)
+        Option1df.to_csv("Options1.csv", index=False)
     def modify_mode_option2(self):
-
-
-        Maincategorydf = pd.read_csv(list_csv_name[2])
-        Middlecategorydf = pd.read_csv(list_csv_name[3])
-        Subcategorydf = pd.read_csv(list_csv_name[4])
-        Option1df = pd.read_csv(list_csv_name[5])
-        Options2df = pd.read_csv(list_csv_name[6])
-
-
-
+        new_df = pd.read_csv("case.csv")
+        Options2df = pd.read_csv(list_csv_name[6])  # csv 파일 원본
+        code_option1_of_option2 = Options2df[Options2df['옵션1'] == code_log[5]]  # 원본에서 해당 코드 선택된 상태, = 수정 전 tablewidget과 같음. #백업용
+        index_code_option1_of_option2 = Options2df[Options2df['옵션1'] == code_log[5]].index # 삭제를 위해 인덱스 추출
+        Options2df.drop(index_code_option1_of_option2, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
+        i = 0
         while self.tableWidget_7.item(i, 1) != self.tableWidget99.item(0, 0):
             print(self.tableWidget_7.item(i, 0).text())
             print(self.tableWidget_7.item(i, 1).text())
-            df_append.at[i, 'index'] = i
-            df_append.at[i, '코드'] = self.tableWidget_7.item(i, 0).text()
-            df_append.at[i, '코드명'] = self.tableWidget_7.item(i, 1).text()
-            df_append.at[i, '회사'] = code_log[0]
-            df_append.at[i, '품목군코드'] = code_log[1]
-            df_append.at[i, '대분류코드'] = code_log[2]
-            df_append.at[i, '중분류코드'] = code_log[3]
-            df_append.at[i, '소분류코드'] = code_log[4]
-            df_append.at[i, '옵션1'] = code_log[5]
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_7.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_7.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            new_df.at[i, '대분류코드'] = code_log[2]
+            new_df.at[i, '중분류코드'] = code_log[3]
+            new_df.at[i, '소분류코드'] = code_log[4]
+            new_df.at[i, '옵션1'] = code_log[5]
             i = i + 1
+        print(new_df)
+        Options2df = pd.concat([Options2df, new_df], ignore_index=True)
+        print(Options2df)
+        Options2df.to_csv("Options2.csv", index=False)
 
-        code_product_of_maincategory = Maincategorydf[Maincategorydf['품목군코드'] == code_log[1]]
-        index_code_product_of_maincategory = Maincategorydf[Maincategorydf['품목군코드'] == code_log[1]].index
-        Maincategorydf.drop(index_code_product_of_maincategory, axis='index', inplace=True)
-
-        code_maincateogry_of_middlecategory = Middlecategorydf[Middlecategorydf['대분류코드'] == code_log[2]]
-        index_code_maincateogry_of_middlecategory = Middlecategorydf[Middlecategorydf['대분류코드'] == code_log[2]].index
-        Middlecategorydf.drop(index_code_maincateogry_of_middlecategory, axis='index', inplace=True)
-
-        code_middlecateogry_of_subcategory = Subcategorydf[Subcategorydf['중분류코드'] == code_log[3]]
-        index_code_middlecateogry_of_subcategory = Subcategorydf[Subcategorydf['중분류코드'] == code_log[3]].index
-        Subcategorydf.drop(index_code_middlecateogry_of_subcategory, axis='index', inplace=True)
-
-        code_subcategory_of_option1 = Option1df[Option1df['소분류코드'] == code_log[4]]
-        index_code_subcategory_of_option1 = Option1df[Option1df['소분류코드'] == code_log[4]].index
-        Option1df.drop(index_code_subcategory_of_option1, axis='index', inplace=True)
-
-        code_option1_of_option2 = Options2df[Options2df['옵션1'] == code_log[5]]
-        index_code_option1_of_option2 = Options2df[Options2df['옵션1'] == code_log[5]].index
-        Options2df.drop(index_code_option1_of_option2, axis='index', inplace=True)
 
 
 
@@ -731,7 +848,7 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
 
-    stylesheet = qtvsc.load_stylesheet(qtvsc.Theme.LIGHT_VS)
+    stylesheet = qtvsc.load_stylesheet(qtvsc.Theme.DARK_VS)
     app.setStyleSheet(stylesheet)
     mainWindow = QtWidgets.QMainWindow()
 
