@@ -9,12 +9,7 @@
 
 import os
 import pandas as pd
-import qdarkstyle
-import qdarktheme
 from PyQt5 import QtCore, QtWidgets
-
-from qtpy import QtWidgets
-
 import qtvscodestyle as qtvsc
 from PyQt5.QtWidgets import QTableWidgetItem
 
@@ -24,10 +19,12 @@ os.environ['QT_API'] = 'pyqt5'
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
-        mainWindow.resize(1280, 800)
-        mainWindow.setMinimumSize(QtCore.QSize(1280, 800))
-        mainWindow.setMaximumSize(QtCore.QSize(1280, 800))
-
+        mainWindow.resize(1280, 820)
+        mainWindow.setMinimumSize(QtCore.QSize(1280, 820))
+        mainWindow.setMaximumSize(QtCore.QSize(1280, 820))
+        self.statusbar = QtWidgets.QStatusBar(mainWindow)
+        self.statusbar.setObjectName("statusbar")
+        mainWindow.setStatusBar(self.statusbar)
 
         self.centralwidget = QtWidgets.QWidget(mainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -38,6 +35,7 @@ class Ui_mainWindow(object):
         self.tableWidget99.setRowCount(1)
         self.tableWidget99.setColumnCount(1)  # 이부분 tableWidget의 none값의 타입을 모르겠고 인터넷에서도 관련 문서를 찾을 수가 없어서 이렇게 나둠. 비어있는지 비교하기 위한 값.
         self.tableWidget99.hide()
+
 
 
         self.Frame_1 = QtWidgets.QFrame(self.horizontalFrame)
@@ -224,6 +222,8 @@ class Ui_mainWindow(object):
         self.retranslateUi(mainWindow)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
 
+
+        self.statusbar.showMessage("상태 : 정상")
     def changeColor(self):
 
         # if button is checked
@@ -242,6 +242,8 @@ class Ui_mainWindow(object):
             self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
             self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
 
+            self.statusbar.showMessage("수정 가능한 상태")
+
         # if it is unchecked
         else:
 
@@ -258,6 +260,7 @@ class Ui_mainWindow(object):
             self.tableWidget_5.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.tableWidget_6.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.statusbar.showMessage("수정 완료")
 
     def retranslateUi(self, mainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -286,24 +289,19 @@ class Ui_mainWindow(object):
     def cleaner_combobox_tableWidget(self, where):
         if where < 7:
             self.tableWidget_7.clear()
-
             if where < 6:
                 self.tableWidget_6.clear()
-
                 if where < 5:
                     self.tableWidget_5.clear()
-
                     if where < 4:
                         self.tableWidget_4.clear()
-
                         if where < 3:
                             self.tableWidget_3.clear()
-
                             if where < 2:
                                 self.tableWidget_2.clear()
-
                                 if where < 1:
                                     self.tableWidget.clear()
+
 
     def company_tablewidget_set(self):
         df = pd.read_csv(list_csv_name[0])
@@ -312,6 +310,7 @@ class Ui_mainWindow(object):
                 if str(df.iat[i, j]) != 'nan':
                     item = QTableWidgetItem(str(df.iat[i, j]))
                     self.tableWidget.setItem(i, j - 1, item)
+        self.statusbar.showMessage("회사 목록")
 
 
 
@@ -340,9 +339,10 @@ class Ui_mainWindow(object):
                         self.tableWidget_2.setItem(i, j - 1, item)
             self.code_logging(1, code)
             self.code_name_logging(1, codename)
+            status = "회사 선택 : " + str(codename) +" 목록"
+            self.statusbar.showMessage(status)
         else:
             self.cleaner_combobox_tableWidget(1)
-
 
     def products_tablewidget_changed2(self):
         row = self.tableWidget_2.currentIndex().row()
@@ -370,6 +370,8 @@ class Ui_mainWindow(object):
                         self.tableWidget_3.setItem(i, j - 1, item)
             self.code_logging(2, code)
             self.code_name_logging(2, codename)
+            status = "품목군 선택 : " + str(codename) + " 목록"
+            self.statusbar.showMessage(status)
         else:
             self.cleaner_combobox_tableWidget(2)
 
@@ -398,6 +400,8 @@ class Ui_mainWindow(object):
                         self.tableWidget_4.setItem(i, j - 1, item)
             self.code_logging(3, code)
             self.code_name_logging(3, codename)
+            status = "대분류 선택 : " + str(codename) + " 목록"
+            self.statusbar.showMessage(status)
         else:
             self.cleaner_combobox_tableWidget(3)
 
@@ -426,6 +430,8 @@ class Ui_mainWindow(object):
                         self.tableWidget_5.setItem(i, j - 1, item)
             self.code_logging(4, code)
             self.code_name_logging(4, codename)
+            status = "중분류 선택 : " + str(codename) + " 목록"
+            self.statusbar.showMessage(status)
         else:
             self.cleaner_combobox_tableWidget(4)
 
@@ -454,6 +460,8 @@ class Ui_mainWindow(object):
                         self.tableWidget_6.setItem(i, j - 1, item)
             self.code_logging(5, code)
             self.code_name_logging(5, codename)
+            status = "소분류 선택 : " + str(codename) + " 목록"
+            self.statusbar.showMessage(status)
         else:
             self.cleaner_combobox_tableWidget(5)
 
@@ -482,6 +490,8 @@ class Ui_mainWindow(object):
                         self.tableWidget_7.setItem(i, j - 1, item)
             self.code_logging(6, code)
             self.code_name_logging(6, codename)
+            status = "옵션1 선택 : " + str(codename) + " 목록"
+            self.statusbar.showMessage(status)
         else:
             self.cleaner_combobox_tableWidget(6)
 
@@ -496,6 +506,8 @@ class Ui_mainWindow(object):
             code = df_before.iat[0, 1]
             self.code_logging(7, code)
             self.code_name_logging(7, codename)
+            status = "옵션2 선택 : " + str(codename)
+            self.statusbar.showMessage(status)
     def csv_list(self, MainWindow):
 
         _translate = QtCore.QCoreApplication.translate
@@ -626,6 +638,80 @@ class Ui_mainWindow(object):
         if bool:
             csvindex = self.comboBox_9.currentIndex() - 1
             os.startfile(list_csv_name[csvindex])
+            status = str(list_csv_name[csvindex]) + " 여는 중."
+            self.statusbar.showMessage(status)
+
+    def modify_mode_company(self):
+        Companiesdf = pd.read_csv(list_csv_name[0])
+        new_df = pd.read_csv("case.csv")
+        Productsdf = pd.read_csv(list_csv_name[1])
+        code_company_of_product = Productsdf[Productsdf['회사'] == code_log[0]]  # 원래 테이블, = 수정 전 tablewidget과 같음.
+        index_code_company_of_product = Productsdf[Productsdf['회사'] == code_log[0]].index
+        Productsdf.drop(index_code_company_of_product, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
+        i=0
+        while self.tableWidget_7.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget.item(i, 0).text())
+            print(self.tableWidget.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_7.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_7.item(i, 1).text()
+            i=i+1
+
+
+
+
+    def modify_mode_product(self):
+    def modify_mode_maincategory(self):
+    def modify_mode_middlecategory(self):
+    def modify_mode_subcategory(self):
+    def modify_mode_option1(self):
+    def modify_mode_option2(self):
+
+
+        Maincategorydf = pd.read_csv(list_csv_name[2])
+        Middlecategorydf = pd.read_csv(list_csv_name[3])
+        Subcategorydf = pd.read_csv(list_csv_name[4])
+        Option1df = pd.read_csv(list_csv_name[5])
+        Options2df = pd.read_csv(list_csv_name[6])
+
+
+
+        while self.tableWidget_7.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_7.item(i, 0).text())
+            print(self.tableWidget_7.item(i, 1).text())
+            df_append.at[i, 'index'] = i
+            df_append.at[i, '코드'] = self.tableWidget_7.item(i, 0).text()
+            df_append.at[i, '코드명'] = self.tableWidget_7.item(i, 1).text()
+            df_append.at[i, '회사'] = code_log[0]
+            df_append.at[i, '품목군코드'] = code_log[1]
+            df_append.at[i, '대분류코드'] = code_log[2]
+            df_append.at[i, '중분류코드'] = code_log[3]
+            df_append.at[i, '소분류코드'] = code_log[4]
+            df_append.at[i, '옵션1'] = code_log[5]
+            i = i + 1
+
+        code_product_of_maincategory = Maincategorydf[Maincategorydf['품목군코드'] == code_log[1]]
+        index_code_product_of_maincategory = Maincategorydf[Maincategorydf['품목군코드'] == code_log[1]].index
+        Maincategorydf.drop(index_code_product_of_maincategory, axis='index', inplace=True)
+
+        code_maincateogry_of_middlecategory = Middlecategorydf[Middlecategorydf['대분류코드'] == code_log[2]]
+        index_code_maincateogry_of_middlecategory = Middlecategorydf[Middlecategorydf['대분류코드'] == code_log[2]].index
+        Middlecategorydf.drop(index_code_maincateogry_of_middlecategory, axis='index', inplace=True)
+
+        code_middlecateogry_of_subcategory = Subcategorydf[Subcategorydf['중분류코드'] == code_log[3]]
+        index_code_middlecateogry_of_subcategory = Subcategorydf[Subcategorydf['중분류코드'] == code_log[3]].index
+        Subcategorydf.drop(index_code_middlecateogry_of_subcategory, axis='index', inplace=True)
+
+        code_subcategory_of_option1 = Option1df[Option1df['소분류코드'] == code_log[4]]
+        index_code_subcategory_of_option1 = Option1df[Option1df['소분류코드'] == code_log[4]].index
+        Option1df.drop(index_code_subcategory_of_option1, axis='index', inplace=True)
+
+        code_option1_of_option2 = Options2df[Options2df['옵션1'] == code_log[5]]
+        index_code_option1_of_option2 = Options2df[Options2df['옵션1'] == code_log[5]].index
+        Options2df.drop(index_code_option1_of_option2, axis='index', inplace=True)
+
+
+
 
 
 
@@ -644,8 +730,6 @@ if __name__ == "__main__":
 
 
     app = QtWidgets.QApplication(sys.argv)
-    #app.setStyleSheet(qdarktheme.load_stylesheet())
-    #app.setStyleSheet(qdarkstyle.load_stylesheet(palette=LightPalette))
 
     stylesheet = qtvsc.load_stylesheet(qtvsc.Theme.LIGHT_VS)
     app.setStyleSheet(stylesheet)
@@ -657,9 +741,9 @@ if __name__ == "__main__":
                      'Options1.csv', 'Options2.csv']
     list_csv = ['companies', 'products', 'maincategory', 'middlecategory', 'subcategory',
                 'options1', 'options2']
-    code_log = ['1', '2', '3', '4', '5', '6', '7']
-    code_log_reset = ['', '', '', '', '', '', '']
-    code_name_log = ['1', '2', '3', '4', '5', '6', '7']
+    code_log = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
+    code_log_reset = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
+    code_name_log = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
 
 
 
