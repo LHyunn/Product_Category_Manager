@@ -15,6 +15,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QTableWidgetItem
 
 os.environ['QT_API'] = 'pyqt5'
+os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
 
 
 class Ui_mainWindow(object):
@@ -27,6 +28,7 @@ class Ui_mainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(mainWindow)
         self.statusbar.setObjectName("statusbar")
         mainWindow.setStatusBar(self.statusbar)
+        self.solt_data()
 
         self.centralwidget = QtWidgets.QWidget(mainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -194,6 +196,8 @@ class Ui_mainWindow(object):
                                       "background-color: white;"
                                       "border: 2px solid rgb(58, 134, 255);"
                                       "border-radius: 20px;")
+        self.pushButton.setCheckable(True)
+        self.pushButton.clicked.connect(self.open_button_event)
 
         self.pushButton_3 = QtWidgets.QPushButton(self.horizontalFrame)
         self.pushButton_3.setGeometry(QtCore.QRect(770, 20, 131, 41))
@@ -211,7 +215,7 @@ class Ui_mainWindow(object):
 
         self.statusbar.showMessage("상태 : 정상")
 
-        self.solt_data()
+
 
     def changeColor(self):
 
@@ -310,7 +314,7 @@ class Ui_mainWindow(object):
                                     self.tableWidget.clear()
 
     def company_tablewidget_set(self):
-        df = pd.read_csv(list_csv_name[0], encoding = 'cp949')
+        df = pd.read_csv(list_csv_name[0], encoding = 'utf-8')
         for i in range(0, len(df.index.tolist()), 1):
             for j in range(1, 3, 1):
                 if str(df.iat[i, j]) != 'nan':
@@ -327,11 +331,11 @@ class Ui_mainWindow(object):
                 codename = self.tableWidget.item(row, 1).text()
                 self.cleaner_combobox_tableWidget(1)
                 current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[0], encoding = 'cp949')
+                df_before = pd.read_csv(list_csv_name[0], encoding = 'utf-8')
                 df_before = df_before.applymap(str)
                 df_before = df_before[df_before['코드명'] == current_select2]
                 code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[1], encoding = 'cp949')
+                df = pd.read_csv(list_csv_name[1], encoding = 'utf-8')
                 df = df.applymap(str)
                 df1 = df[df['회사'] == code]
                 print(current_select2)
@@ -358,11 +362,11 @@ class Ui_mainWindow(object):
             if self.tableWidget_2.item(row, 1) != self.tableWidget99.item(1, 1):
                 codename = self.tableWidget_2.item(row, 1).text()
                 current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[1], encoding = 'cp949')
+                df_before = pd.read_csv(list_csv_name[1], encoding = 'utf-8')
                 df_before = df_before.applymap(str)
                 df_before = df_before[df_before['코드명'] == current_select2]
                 code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[2], encoding = 'cp949')
+                df = pd.read_csv(list_csv_name[2], encoding = 'utf-8')
                 df = df.applymap(str)
                 df1 = df[df['품목군코드'] == code]
                 # 디버깅용
@@ -392,11 +396,11 @@ class Ui_mainWindow(object):
             if self.tableWidget_3.item(row, 1) != self.tableWidget99.item(1, 1):
                 codename = self.tableWidget_3.item(row, 1).text()
                 current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[2], encoding = 'cp949')
+                df_before = pd.read_csv(list_csv_name[2], encoding = 'utf-8')
                 df_before = df_before.applymap(str)
                 df_before = df_before[df_before['코드명'] == current_select2]
                 code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[3], encoding = 'cp949')
+                df = pd.read_csv(list_csv_name[3], encoding = 'utf-8')
                 df = df.applymap(str)
                 df1 = df[df['대분류코드'] == code]
                 # 디버깅용
@@ -425,11 +429,11 @@ class Ui_mainWindow(object):
             if self.tableWidget_4.item(row, 1) != self.tableWidget99.item(1, 1):
                 codename = self.tableWidget_4.item(row, 1).text()
                 current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[3], encoding = 'cp949')
+                df_before = pd.read_csv(list_csv_name[3], encoding = 'utf-8')
                 df_before = df_before.applymap(str)
                 df_before = df_before[df_before['코드명'] == current_select2]
                 code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[4], encoding = 'cp949')
+                df = pd.read_csv(list_csv_name[4], encoding = 'utf-8')
                 df = df.applymap(str)
                 df1 = df[df['중분류코드'] == code]
                 # 디버깅용
@@ -458,11 +462,11 @@ class Ui_mainWindow(object):
             if self.tableWidget_5.item(row, 1) != self.tableWidget99.item(1, 1):
                 codename = self.tableWidget_5.item(row, 1).text()
                 current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[4], encoding = 'cp949')
+                df_before = pd.read_csv(list_csv_name[4], encoding = 'utf-8')
                 df_before = df_before.applymap(str)
                 df_before = df_before[df_before['코드명'] == current_select2]
                 code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[5], encoding = 'cp949')
+                df = pd.read_csv(list_csv_name[5], encoding = 'utf-8')
                 df = df.applymap(str)
                 df1 = df[df['소분류코드'] == code]
                 # 디버깅용
@@ -491,11 +495,11 @@ class Ui_mainWindow(object):
             if self.tableWidget_6.item(row, 1) != self.tableWidget99.item(1, 1):
                 codename = self.tableWidget_6.item(row, 1).text()
                 current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[5], encoding = 'cp949')
+                df_before = pd.read_csv(list_csv_name[5], encoding = 'utf-8')
                 df_before = df_before.applymap(str)
                 df_before = df_before[df_before['코드명'] == current_select2]
                 code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[6], encoding = 'cp949')
+                df = pd.read_csv(list_csv_name[6], encoding = 'utf-8')
                 df = df.applymap(str)
                 df1 = df[df['옵션1'] == code]
                 # 디버깅용
@@ -524,7 +528,7 @@ class Ui_mainWindow(object):
             if self.tableWidget_7.item(row, 1) != self.tableWidget99.item(1, 1):
                 codename = self.tableWidget_7.item(row, 1).text()
                 current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[5], encoding = 'cp949')
+                df_before = pd.read_csv(list_csv_name[5], encoding = 'utf-8')
                 df_before = df_before.applymap(str)
                 df_before = df_before[df_before['코드명'] == current_select2]
                 code = df_before.iat[0, 1]
@@ -684,13 +688,15 @@ class Ui_mainWindow(object):
 
     def open_button_event(self, bool):
         if bool:
-            csvindex = self.comboBox_9.currentIndex() - 1
+            csvindex = self.comboBox.currentIndex() - 1
+            #df = pd.read_csv(list_csv_name[csvindex], encoding = 'utf-8')
+            #df.to_csv(list_csv_name[csvindex],index=False, encoding='cp949')
             os.startfile(list_csv_name[csvindex])
             status = str(list_csv_name[csvindex]) + " 여는 중."
             self.statusbar.showMessage(status)
 
     def modify_mode_company(self):
-        new_df = pd.read_csv("case.csv", encoding = 'cp949')
+        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
         i = 0
         while self.tableWidget.item(i, 1) != self.tableWidget99.item(0, 0):
             print(self.tableWidget.item(i, 0).text())
@@ -699,12 +705,12 @@ class Ui_mainWindow(object):
             new_df.at[i, '코드'] = self.tableWidget.item(i, 0).text()
             new_df.at[i, '코드명'] = self.tableWidget.item(i, 1).text()
             i = i + 1
-        new_df.to_csv("Companies.csv", index=False, encoding = 'cp949')
+        new_df.to_csv("Companies.csv", index=False, encoding = 'utf-8-sig')
 
     def modify_mode_product(self):
 
-        new_df = pd.read_csv("case.csv", encoding = 'cp949')
-        productsdf = pd.read_csv(list_csv_name[1], encoding = 'cp949')  # csv 파일 원본
+        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
+        productsdf = pd.read_csv(list_csv_name[1], encoding = 'utf-8')  # csv 파일 원본
         rows = len(productsdf)
         columns = len(productsdf.columns)
         for j in range(rows):
@@ -726,12 +732,12 @@ class Ui_mainWindow(object):
         print(new_df)
         productsdf = pd.concat([productsdf, new_df], ignore_index=True)
         print(productsdf)
-        productsdf.to_csv("Products.csv", index=False, encoding = 'cp949')
+        productsdf.to_csv("Products.csv", index=False, encoding = 'utf-8-sig')
 
     def modify_mode_maincategory(self):
 
-        new_df = pd.read_csv("case.csv", encoding = 'cp949')
-        Maincategorydf = pd.read_csv(list_csv_name[2], encoding = 'cp949')  # csv 파일 원본
+        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
+        Maincategorydf = pd.read_csv(list_csv_name[2], encoding = 'utf-8')  # csv 파일 원본
         rows = len(Maincategorydf)
         columns = len(Maincategorydf.columns)
         for j in range(rows):
@@ -754,12 +760,12 @@ class Ui_mainWindow(object):
         print(new_df)
         Maincategorydf = pd.concat([Maincategorydf, new_df], ignore_index=True)
         print(Maincategorydf)
-        Maincategorydf.to_csv("MainCategory.csv", index=False, encoding = 'cp949')
+        Maincategorydf.to_csv("MainCategory.csv", index=False, encoding = 'utf-8-sig')
 
     def modify_mode_middlecategory(self):
 
-        new_df = pd.read_csv("case.csv", encoding = 'cp949')
-        Middlecategorydf = pd.read_csv(list_csv_name[3], encoding = 'cp949')  # csv 파일 원본
+        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
+        Middlecategorydf = pd.read_csv(list_csv_name[3], encoding = 'utf-8')  # csv 파일 원본
         rows = len(Middlecategorydf)
         columns = len(Middlecategorydf.columns)
         for j in range(rows):
@@ -784,11 +790,11 @@ class Ui_mainWindow(object):
         print(new_df)
         Middlecategorydf = pd.concat([Middlecategorydf, new_df], ignore_index=True)
         print(Middlecategorydf)
-        Middlecategorydf.to_csv("MiddleCategory.csv", index=False, encoding = 'cp949')
+        Middlecategorydf.to_csv("MiddleCategory.csv", index=False, encoding = 'utf-8-sig')
 
     def modify_mode_subcategory(self):
-        new_df = pd.read_csv("case.csv", encoding = 'cp949')
-        Subcategorydf = pd.read_csv(list_csv_name[4], encoding = 'cp949')  # csv 파일 원본
+        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
+        Subcategorydf = pd.read_csv(list_csv_name[4], encoding = 'utf-8')  # csv 파일 원본
         rows = len(Subcategorydf)
         columns = len(Subcategorydf.columns)
         for j in range(rows):
@@ -813,11 +819,11 @@ class Ui_mainWindow(object):
         print(new_df)
         Subcategorydf = pd.concat([Subcategorydf, new_df], ignore_index=True)
         print(Subcategorydf)
-        Subcategorydf.to_csv("SubCategory.csv", index=False, encoding = 'cp949')
+        Subcategorydf.to_csv("SubCategory.csv", index=False, encoding = 'utf-8-sig')
 
     def modify_mode_option1(self):
-        new_df = pd.read_csv("case.csv", encoding = 'cp949')
-        Option1df = pd.read_csv(list_csv_name[5], encoding = 'cp949')  # csv 파일 원본
+        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
+        Option1df = pd.read_csv(list_csv_name[5], encoding = 'utf-8')  # csv 파일 원본
         rows = len(Option1df)
         columns = len(Option1df.columns)
         for j in range(rows):
@@ -842,11 +848,11 @@ class Ui_mainWindow(object):
         print(new_df)
         Option1df = pd.concat([Option1df, new_df], ignore_index=True)
         print(Option1df)
-        Option1df.to_csv("Options1.csv", index=False, encoding = 'cp949')
+        Option1df.to_csv("Options1.csv", index=False, encoding = 'utf-8-sig')
 
     def modify_mode_option2(self):
-        new_df = pd.read_csv("case.csv", encoding = 'cp949')
-        Options2df = pd.read_csv(list_csv_name[6], encoding = 'cp949')  # csv 파일 원본
+        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
+        Options2df = pd.read_csv(list_csv_name[6], encoding = 'utf-8')  # csv 파일 원본
         rows = len(Options2df)
         columns = len(Options2df.columns)
         for j in range(rows):
@@ -875,13 +881,17 @@ class Ui_mainWindow(object):
         print(new_df)
         Options2df = pd.concat([Options2df, new_df], ignore_index=True)
         print(Options2df)
-        Options2df.to_csv("Options2.csv", index=False, encoding = 'cp949')
+        Options2df.to_csv("Options2.csv", index=False, encoding = 'utf-8-sig')
 
     def solt_data(self):
         for i in range(7):
-            df = pd.read_csv(list_csv_name[i], encoding = 'cp949')
+            try:
+                df = pd.read_csv(list_csv_name[i], encoding='utf-8')
+            except UnicodeDecodeError:
+                df = pd.read_csv(list_csv_name[i], encoding='cp949')
+
             df.sort_values('코드', axis=0, inplace=True)
-            df.to_csv(list_csv_name[i], index=False, encoding = 'cp949')
+            df.to_csv(list_csv_name[i], index=False, encoding = 'utf-8-sig')
 
 
 if __name__ == "__main__":
@@ -900,6 +910,7 @@ if __name__ == "__main__":
     stylesheet = qtvsc.load_stylesheet(qtvsc.Theme.DARK_VS)
     app.setStyleSheet(stylesheet)
     mainWindow = QtWidgets.QMainWindow()
+    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
 
     list_option = ['선택', '회사', '품목군', '대분류', '중분류', '소분류', '옵션1', '옵션2']
     list_csv_name = ['Companies.csv', 'Products.csv', 'MainCategory.csv', 'MiddleCategory.csv', 'SubCategory.csv',
