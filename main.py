@@ -182,12 +182,13 @@ class Ui_mainWindow(object):
         self.textEdit = QtWidgets.QTextEdit(self.horizontalFrame)
         self.textEdit.setGeometry(QtCore.QRect(10, 30, 251, 31))
         self.textEdit.setObjectName("textEdit")
-        self.textEdit.setTextInteractionFlags(QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
+
 
         self.textEdit_2 = QtWidgets.QTextEdit(self.horizontalFrame)
         self.textEdit_2.setGeometry(QtCore.QRect(270, 30, 341, 31))
         self.textEdit_2.setObjectName("textEdit_2")
         self.textEdit_2.setTextInteractionFlags(QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
+        self.textEdit_2.hide()
 
         self.pushButton = QtWidgets.QPushButton(self.horizontalFrame)
         self.pushButton.setGeometry(QtCore.QRect(1130, 20, 131, 41))
@@ -286,6 +287,7 @@ class Ui_mainWindow(object):
         self.label_7.setText(_translate("mainWindow", "옵션2"))
         self.label_8.setText(_translate("mainWindow", "품목 코드"))
         self.label_9.setText(_translate("mainWindow", "품목명 코드"))
+        self.label_9.hide()
         self.pushButton.setText(_translate("mainWindow", "CSV 파일 열기"))
         self.pushButton_3.setText(_translate("mainWindow", "수정 모드 꺼짐"))
         self.comboBox.setItemText(0, _translate("MainWindow", "선택"))
