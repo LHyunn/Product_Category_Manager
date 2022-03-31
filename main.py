@@ -28,7 +28,7 @@ class Ui_mainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(mainWindow)
         self.statusbar.setObjectName("statusbar")
         mainWindow.setStatusBar(self.statusbar)
-        self.solt_data()
+
 
         self.centralwidget = QtWidgets.QWidget(mainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -189,7 +189,6 @@ class Ui_mainWindow(object):
         self.textEdit_2.setObjectName("textEdit_2")
         self.textEdit_2.setTextInteractionFlags(QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
         self.textEdit_2.hide()
-
         self.pushButton = QtWidgets.QPushButton(self.horizontalFrame)
         self.pushButton.setGeometry(QtCore.QRect(1130, 20, 131, 41))
         self.pushButton.setObjectName("pushButton")
@@ -219,7 +218,7 @@ class Ui_mainWindow(object):
 
 
     def changeColor(self):
-
+        global total
         # if button is checked
         if self.pushButton_3.isChecked():
 
@@ -256,18 +255,34 @@ class Ui_mainWindow(object):
             self.tableWidget_7.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.statusbar.showMessage("수정 완료")
             self.modify_mode_company()
+            total.to_csv("total.csv", encoding='utf-8-sig', index=False)
+            total = pd.read_csv("total.csv")
             if code_log[0] != ' ':
                 self.modify_mode_product()
+                total.to_csv("total.csv", encoding='utf-8-sig', index=False)
+                total = pd.read_csv("total.csv")
                 if code_log[1] != ' ':
                     self.modify_mode_maincategory()
+                    total.to_csv("total.csv", encoding='utf-8-sig', index=False)
+                    total = pd.read_csv("total.csv")
                     if code_log[2] != ' ':
                         self.modify_mode_middlecategory()
+                        total.to_csv("total.csv", encoding='utf-8-sig', index=False)
+                        total = pd.read_csv("total.csv")
                         if code_log[3] != ' ':
                             self.modify_mode_subcategory()
+                            total.to_csv("total.csv", encoding='utf-8-sig', index=False)
+                            total = pd.read_csv("total.csv")
                             if code_log[4] != ' ':
-                                self.modify_mode_option1()
+                                self.modify_mode_options1()
+                                total.to_csv("total.csv", encoding='utf-8-sig', index=False)
+                                total = pd.read_csv("total.csv")
                                 if code_log[5] != ' ':
-                                    self.modify_mode_option2()
+                                    self.modify_mode_options2()
+                                    total.to_csv("total.csv", encoding='utf-8-sig', index=False)
+                                    total = pd.read_csv("total.csv")
+            total = total.drop_duplicates(keep='first')
+            total = pd.read_csv("total.csv")
 
             self.cleaner_combobox_tableWidget(0)
             self.company_tablewidget_set()
@@ -286,8 +301,7 @@ class Ui_mainWindow(object):
         self.label_6.setText(_translate("mainWindow", "옵션1"))
         self.label_7.setText(_translate("mainWindow", "옵션2"))
         self.label_8.setText(_translate("mainWindow", "품목 코드"))
-        self.label_9.setText(_translate("mainWindow", "품목명 코드"))
-        self.label_9.hide()
+        #self.label_9.setText(_translate("mainWindow", "품목명 코드"))
         self.pushButton.setText(_translate("mainWindow", "CSV 파일 열기"))
         self.pushButton_3.setText(_translate("mainWindow", "수정 모드 꺼짐"))
         self.comboBox.setItemText(0, _translate("MainWindow", "선택"))
@@ -316,39 +330,34 @@ class Ui_mainWindow(object):
                                     self.tableWidget.clear()
 
     def company_tablewidget_set(self):
-        df = pd.read_csv(list_csv_name[0], encoding = 'utf-8')
-        for i in range(0, len(df.index.tolist()), 1):
+        df_company = total.loc[total['회사'].isna()]
+        self.tableWidget.setRowCount(len(df_company.index.tolist()) + 1)
+        for i in range(0, len(df_company.index.tolist()), 1):
             for j in range(1, 3, 1):
-                if str(df.iat[i, j]) != 'nan':
-                    item = QTableWidgetItem(str(df.iat[i, j]))
+                if str(df_company.iat[i, j]) != 'nan':
+                    item = QTableWidgetItem(str(df_company.iat[i, j]))
                     self.tableWidget.setItem(i, j - 1, item)
         self.statusbar.showMessage("회사 목록")
+
 
     def company_tablewidget_changed2(self):
         if self.pushButton_3.isChecked():
             print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
+            self.cleaner_combobox_tableWidget(1)
             row = self.tableWidget.currentIndex().row()
             if self.tableWidget.item(row, 1) != self.tableWidget99.item(1, 1):
                 codename = self.tableWidget.item(row, 1).text()
-                self.cleaner_combobox_tableWidget(1)
-                current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[0], encoding = 'utf-8')
-                df_before = df_before.applymap(str)
-                df_before = df_before[df_before['코드명'] == current_select2]
-                code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[1], encoding = 'utf-8')
-                df = df.applymap(str)
-                df1 = df[df['회사'] == code]
-                print(current_select2)
-                print(df_before)
-                print(code)
-                print(df1)
-                for i in range(0, len(df1.index.tolist()), 1):
+                code = self.tableWidget.item(row, 0).text()
+                df_product = total.loc[total['회사'] == code]
+                df_product = df_product.loc[df_product['품목군코드'].isna()]
+                self.tableWidget_2.setRowCount(len(df_product.index.tolist()) + 5)
+                for i in range(0, len(df_product.index.tolist()), 1):
                     for j in range(1, 3, 1):
-                        if str(df1.iat[i, j]) != 'nan':
-                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                        if str(df_product.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df_product.iat[i, j]))
                             self.tableWidget_2.setItem(i, j - 1, item)
+
                 self.code_logging(1, code)
                 self.code_name_logging(1, codename)
                 status = "회사 선택 : " + str(codename) + " 목록"
@@ -360,28 +369,19 @@ class Ui_mainWindow(object):
         if self.pushButton_3.isChecked():
             print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
+            self.cleaner_combobox_tableWidget(2)
             row = self.tableWidget_2.currentIndex().row()
             if self.tableWidget_2.item(row, 1) != self.tableWidget99.item(1, 1):
                 codename = self.tableWidget_2.item(row, 1).text()
-                current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[1], encoding = 'utf-8')
-                df_before = df_before.applymap(str)
-                df_before = df_before[df_before['코드명'] == current_select2]
-                code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[2], encoding = 'utf-8')
-                df = df.applymap(str)
-                df1 = df[df['품목군코드'] == code]
-                # 디버깅용
-
-                print(current_select2)
-                print(df_before)
-                print(code)
-                print(df1)
-                self.cleaner_combobox_tableWidget(2)
-                for i in range(0, len(df1.index.tolist()), 1):
+                code = self.tableWidget_2.item(row, 0).text()
+                df_main = total.loc[total['회사'] == code_log[0]]
+                df_main = df_main.loc[df_main['품목군코드']== code]
+                df_main = df_main.loc[df_main['대분류코드'].isna()]
+                self.tableWidget_3.setRowCount(len(df_main.index.tolist()) + 5)
+                for i in range(0, len(df_main.index.tolist()), 1):
                     for j in range(1, 3, 1):
-                        if str(df1.iat[i, j]) != 'nan':
-                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                        if str(df_main.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df_main.iat[i, j]))
                             self.tableWidget_3.setItem(i, j - 1, item)
                 self.code_logging(2, code)
                 self.code_name_logging(2, codename)
@@ -394,27 +394,20 @@ class Ui_mainWindow(object):
         if self.pushButton_3.isChecked():
             print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
+            self.cleaner_combobox_tableWidget(3)
             row = self.tableWidget_3.currentIndex().row()
             if self.tableWidget_3.item(row, 1) != self.tableWidget99.item(1, 1):
+                code = self.tableWidget_3.item(row, 0).text()
                 codename = self.tableWidget_3.item(row, 1).text()
-                current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[2], encoding = 'utf-8')
-                df_before = df_before.applymap(str)
-                df_before = df_before[df_before['코드명'] == current_select2]
-                code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[3], encoding = 'utf-8')
-                df = df.applymap(str)
-                df1 = df[df['대분류코드'] == code]
-                # 디버깅용
-                print(current_select2)
-                print(df_before)
-                print(code)
-                print(df1)
-                self.cleaner_combobox_tableWidget(3)
-                for i in range(0, len(df1.index.tolist()), 1):
+                df_mid = total.loc[total['회사'] == code_log[0]]
+                df_mid = df_mid.loc[df_mid['품목군코드'] == code_log[1]]
+                df_mid = df_mid.loc[df_mid['대분류코드'] == code]
+                df_mid = df_mid.loc[df_mid['중분류코드'].isna()]
+                self.tableWidget_4.setRowCount(len(df_mid.index.tolist()) + 5)
+                for i in range(0, len(df_mid.index.tolist()), 1):
                     for j in range(1, 3, 1):
-                        if str(df1.iat[i, j]) != 'nan':
-                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                        if str(df_mid.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df_mid.iat[i, j]))
                             self.tableWidget_4.setItem(i, j - 1, item)
                 self.code_logging(3, code)
                 self.code_name_logging(3, codename)
@@ -427,27 +420,21 @@ class Ui_mainWindow(object):
         if self.pushButton_3.isChecked():
             print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
+            self.cleaner_combobox_tableWidget(4)
             row = self.tableWidget_4.currentIndex().row()
             if self.tableWidget_4.item(row, 1) != self.tableWidget99.item(1, 1):
+                code = self.tableWidget_4.item(row, 0).text()
                 codename = self.tableWidget_4.item(row, 1).text()
-                current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[3], encoding = 'utf-8')
-                df_before = df_before.applymap(str)
-                df_before = df_before[df_before['코드명'] == current_select2]
-                code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[4], encoding = 'utf-8')
-                df = df.applymap(str)
-                df1 = df[df['중분류코드'] == code]
-                # 디버깅용
-                print(current_select2)
-                print(df_before)
-                print(code)
-                print(df1)
-                self.cleaner_combobox_tableWidget(4)
-                for i in range(0, len(df1.index.tolist()), 1):
+                df_sub = total.loc[total['회사'] == code_log[0]]
+                df_sub = df_sub.loc[df_sub['품목군코드'] == code_log[1]]
+                df_sub = df_sub.loc[df_sub['대분류코드'] == code_log[2]]
+                df_sub = df_sub.loc[df_sub['중분류코드'] == code]
+                df_sub = df_sub.loc[df_sub['소분류코드'].isna()]
+                self.tableWidget_5.setRowCount(len(df_sub.index.tolist()) + 5)
+                for i in range(0, len(df_sub.index.tolist()), 1):
                     for j in range(1, 3, 1):
-                        if str(df1.iat[i, j]) != 'nan':
-                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                        if str(df_sub.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df_sub.iat[i, j]))
                             self.tableWidget_5.setItem(i, j - 1, item)
                 self.code_logging(4, code)
                 self.code_name_logging(4, codename)
@@ -460,27 +447,22 @@ class Ui_mainWindow(object):
         if self.pushButton_3.isChecked():
             print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
+            self.cleaner_combobox_tableWidget(5)
             row = self.tableWidget_5.currentIndex().row()
             if self.tableWidget_5.item(row, 1) != self.tableWidget99.item(1, 1):
+                code = self.tableWidget_5.item(row, 0).text()
                 codename = self.tableWidget_5.item(row, 1).text()
-                current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[4], encoding = 'utf-8')
-                df_before = df_before.applymap(str)
-                df_before = df_before[df_before['코드명'] == current_select2]
-                code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[5], encoding = 'utf-8')
-                df = df.applymap(str)
-                df1 = df[df['소분류코드'] == code]
-                # 디버깅용
-                print(current_select2)
-                print(df_before)
-                print(code)
-                print(df1)
-                self.cleaner_combobox_tableWidget(5)
-                for i in range(0, len(df1.index.tolist()), 1):
+                df_opt1 = total.loc[total['회사'] == code_log[0]]
+                df_opt1 = df_opt1.loc[df_opt1['품목군코드'] == code_log[1]]
+                df_opt1 = df_opt1.loc[df_opt1['대분류코드'] == code_log[2]]
+                df_opt1 = df_opt1.loc[df_opt1['중분류코드'] == code_log[3]]
+                df_opt1 = df_opt1.loc[df_opt1['소분류코드'] == code]
+                df_opt1 = df_opt1.loc[df_opt1['옵션1'].isna()]
+                self.tableWidget_6.setRowCount(len(df_opt1.index.tolist())+5)
+                for i in range(0, len(df_opt1.index.tolist()), 1):
                     for j in range(1, 3, 1):
-                        if str(df1.iat[i, j]) != 'nan':
-                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                        if str(df_opt1.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df_opt1.iat[i, j]))
                             self.tableWidget_6.setItem(i, j - 1, item)
                 self.code_logging(5, code)
                 self.code_name_logging(5, codename)
@@ -493,27 +475,22 @@ class Ui_mainWindow(object):
         if self.pushButton_3.isChecked():
             print("수정 중이라 다음 테이블에 띄우지 않음.")
         else:
+            self.cleaner_combobox_tableWidget(6)
             row = self.tableWidget_6.currentIndex().row()
             if self.tableWidget_6.item(row, 1) != self.tableWidget99.item(1, 1):
+                code = self.tableWidget_6.item(row, 0).text()
                 codename = self.tableWidget_6.item(row, 1).text()
-                current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[5], encoding = 'utf-8')
-                df_before = df_before.applymap(str)
-                df_before = df_before[df_before['코드명'] == current_select2]
-                code = df_before.iat[0, 1]
-                df = pd.read_csv(list_csv_name[6], encoding = 'utf-8')
-                df = df.applymap(str)
-                df1 = df[df['옵션1'] == code]
-                # 디버깅용
-                print(current_select2)
-                print(df_before)
-                print(code)
-                print(df1)
-                self.cleaner_combobox_tableWidget(6)
-                for i in range(0, len(df1.index.tolist()), 1):
+                df_opt2 = total.loc[total['회사'] == code_log[0]]
+                df_opt2 = df_opt2.loc[df_opt2['품목군코드'] == code_log[1]]
+                df_opt2 = df_opt2.loc[df_opt2['대분류코드'] == code_log[2]]
+                df_opt2 = df_opt2.loc[df_opt2['중분류코드'] == code_log[3]]
+                df_opt2 = df_opt2.loc[df_opt2['소분류코드'] == code_log[4]]
+                df_opt2 = df_opt2.loc[df_opt2['옵션1'] == code]
+                self.tableWidget_7.setRowCount(len(df_opt2.index.tolist()) + 5)
+                for i in range(0, len(df_opt2.index.tolist()), 1):
                     for j in range(1, 3, 1):
-                        if str(df1.iat[i, j]) != 'nan':
-                            item = QTableWidgetItem(str(df1.iat[i, j]))
+                        if str(df_opt2.iat[i, j]) != 'nan':
+                            item = QTableWidgetItem(str(df_opt2.iat[i, j]))
                             self.tableWidget_7.setItem(i, j - 1, item)
                 self.code_logging(6, code)
                 self.code_name_logging(6, codename)
@@ -529,25 +506,216 @@ class Ui_mainWindow(object):
             row = self.tableWidget_7.currentIndex().row()
             if self.tableWidget_7.item(row, 1) != self.tableWidget99.item(1, 1):
                 codename = self.tableWidget_7.item(row, 1).text()
-                current_select2 = codename
-                df_before = pd.read_csv(list_csv_name[5], encoding = 'utf-8')
-                df_before = df_before.applymap(str)
-                df_before = df_before[df_before['코드명'] == current_select2]
-                code = df_before.iat[0, 1]
+                code = self.tableWidget_7.item(row, 0).text()
                 self.code_logging(7, code)
                 self.code_name_logging(7, codename)
                 status = "옵션2 선택 : " + str(codename)
                 self.statusbar.showMessage(status)
 
-    def csv_list(self, MainWindow):
 
-        _translate = QtCore.QCoreApplication.translate
+    def modify_mode_company(self):
+        global total
+        total.dropna(subset = ['회사'])
+        new_df = pd.read_csv("case.csv", encoding='utf-8')
+        i = 0
+        while self.tableWidget.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget.item(i, 0).text())
+            print(self.tableWidget.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget.item(i, 1).text()
+            i = i + 1
+
+        print("저장될 테이블")
+        new_df
+        total = pd.concat([new_df,total])
+        total = total.drop_duplicates(keep='first')
+        print("저장된 데이터프레임")
+        total
+
+
+
+
+    def modify_mode_product(self):
+        global total
+        df_product = total.loc[total['회사'] == code_log[0]]
+        df_product = df_product.loc[df_product['품목군코드'].isna()]
+        total = pd.concat([total, df_product])
+        total = total.drop_duplicates(keep=False)
+        new_df = pd.read_csv("case.csv", encoding='utf-8')
+        i = 0
+        while self.tableWidget_2.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_2.item(i, 0).text())
+            print(self.tableWidget_2.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_2.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_2.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            i = i + 1
+        print("저장될 테이블")
+        new_df
+        total = pd.concat([new_df, total])
+        total = total.drop_duplicates(keep='first')
+        print("저장된 데이터프레임")
+        total
+
+
+    def modify_mode_maincategory(self):
+        global total
+        df_maincategory = total.loc[total['회사'] == code_log[0]]
+        df_maincategory = df_maincategory.loc[df_maincategory['품목군코드'] == code_log[1]]
+        df_maincategory = df_maincategory.loc[df_maincategory['대분류코드'].isna()]
+        total = pd.concat([total, df_maincategory])
+        total = total.drop_duplicates(keep=False)
+        new_df = pd.read_csv("case.csv", encoding='utf-8')
+        i = 0
+        while self.tableWidget_3.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_3.item(i, 0).text())
+            print(self.tableWidget_3.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_3.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_3.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            i = i + 1
+        print("저장될 테이블")
+        new_df
+        total = pd.concat([new_df, total])
+        total = total.drop_duplicates(keep='first')
+        print("저장된 데이터프레임")
+        total
+
+
+    def modify_mode_middlecategory(self):
+        global total
+        df_middlecategory = total.loc[total['회사'] == code_log[0]]
+        df_middlecategory = df_middlecategory.loc[df_middlecategory['품목군코드'] == code_log[1]]
+        df_middlecategory = df_middlecategory.loc[df_middlecategory['대분류코드'] == code_log[2]]
+        df_middlecategory = df_middlecategory.loc[df_middlecategory['중분류코드'].isna()]
+        total = pd.concat([total, df_middlecategory])
+        total = total.drop_duplicates(keep=False)
+        new_df = pd.read_csv("case.csv", encoding='utf-8')
+        i = 0
+        while self.tableWidget_4.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_4.item(i, 0).text())
+            print(self.tableWidget_4.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_4.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_4.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            new_df.at[i, '대분류코드'] = code_log[2]
+            i = i + 1
+        print("저장될 테이블")
+        new_df
+        total = pd.concat([new_df, total])
+        total = total.drop_duplicates(keep='first')
+        print("저장된 데이터프레임")
+        total
+
+
+    def modify_mode_subcategory(self):
+        global total
+        df_subcategory = total.loc[total['회사'] == code_log[0]]
+        df_subcategory = df_subcategory.loc[df_subcategory['품목군코드'] == code_log[1]]
+        df_subcategory = df_subcategory.loc[df_subcategory['대분류코드'] == code_log[2]]
+        df_subcategory = df_subcategory.loc[df_subcategory['중분류코드'] == code_log[3]]
+        df_subcategory = df_subcategory.loc[df_subcategory['소분류코드'].isna()]
+        total = pd.concat([total, df_subcategory])
+        total = total.drop_duplicates(keep=False)
+        new_df = pd.read_csv("case.csv", encoding='utf-8')
+        i = 0
+        while self.tableWidget_5.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_5.item(i, 0).text())
+            print(self.tableWidget_5.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_5.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_5.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            new_df.at[i, '대분류코드'] = code_log[2]
+            new_df.at[i, '중분류코드'] = code_log[3]
+            i = i + 1
+        print("저장될 테이블")
+        new_df
+        total = pd.concat([new_df, total])
+        total = total.drop_duplicates(keep='first')
+        print("저장된 데이터프레임")
+        total
+
+    def modify_mode_options1(self):
+        global total
+        df_options1 = total.loc[total['회사'] == code_log[0]]
+        df_options1 = df_options1.loc[df_options1['품목군코드'] == code_log[1]]
+        df_options1 = df_options1.loc[df_options1['대분류코드'] == code_log[2]]
+        df_options1 = df_options1.loc[df_options1['중분류코드'] == code_log[3]]
+        df_options1 = df_options1.loc[df_options1['소분류코드'] == code_log[4]]
+        df_options1 = df_options1.loc[df_options1['옵션1'].isna()]
+        total = pd.concat([total, df_options1])
+        total = total.drop_duplicates(keep=False)
+        new_df = pd.read_csv("case.csv", encoding='utf-8')
+        i = 0
+        while self.tableWidget_6.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_6.item(i, 0).text())
+            print(self.tableWidget_6.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_6.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_6.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            new_df.at[i, '대분류코드'] = code_log[2]
+            new_df.at[i, '중분류코드'] = code_log[3]
+            new_df.at[i, '소분류코드'] = code_log[4]
+            i = i + 1
+        print("저장될 테이블")
+        new_df
+        total = pd.concat([new_df, total])
+        total = total.drop_duplicates(keep='first')
+        print("저장된 데이터프레임")
+        total
+
+    def modify_mode_options2(self):
+        global total
+        df_options2 = total.loc[total['회사'] == code_log[0]]
+        df_options2 = df_options2.loc[df_options2['품목군코드'] == code_log[1]]
+        df_options2 = df_options2.loc[df_options2['대분류코드'] == code_log[2]]
+        df_options2 = df_options2.loc[df_options2['중분류코드'] == code_log[3]]
+        df_options2 = df_options2.loc[df_options2['소분류코드'] == code_log[4]]
+        df_options2 = df_options2.loc[df_options2['옵션1'] == code_log[5]]
+        total = pd.concat([total, df_options2])
+        total = total.drop_duplicates(keep=False)
+        new_df = pd.read_csv("case.csv", encoding='utf-8')
+        i = 0
+        while self.tableWidget_7.item(i, 1) != self.tableWidget99.item(0, 0):
+            print(self.tableWidget_7.item(i, 0).text())
+            print(self.tableWidget_7.item(i, 1).text())
+            new_df.at[i, 'index'] = i
+            new_df.at[i, '코드'] = self.tableWidget_7.item(i, 0).text()
+            new_df.at[i, '코드명'] = self.tableWidget_7.item(i, 1).text()
+            new_df.at[i, '회사'] = code_log[0]
+            new_df.at[i, '품목군코드'] = code_log[1]
+            new_df.at[i, '대분류코드'] = code_log[2]
+            new_df.at[i, '중분류코드'] = code_log[3]
+            new_df.at[i, '소분류코드'] = code_log[4]
+            new_df.at[i, '옵션1'] = code_log[5]
+
+            i = i + 1
+        print("저장될 테이블")
+        new_df
+        total = pd.concat([new_df, total])
+        total = total.drop_duplicates(keep='first')
+        print("저장된 데이터프레임")
+        total
+
+
+
+    def csv_list(self, MainWindow):
 
         self.comboBox.clear()
         for i in range(8):
             self.comboBox.insertItem(i, list_option[i])
-        # self.comboBox.activated.connect(self.selectedcsvnumber)
-        # self.button2.clicked.connect(lambda: self.open_button_event(True))
+
+        self.pushButton.clicked.connect(lambda: self.open_button_event(True))
 
     def code_logging(self, where, code):
         if where == 0:
@@ -691,209 +859,43 @@ class Ui_mainWindow(object):
     def open_button_event(self, bool):
         if bool:
             csvindex = self.comboBox.currentIndex() - 1
-            #df = pd.read_csv(list_csv_name[csvindex], encoding = 'utf-8')
-            #df.to_csv(list_csv_name[csvindex],index=False, encoding='cp949')
-            os.startfile(list_csv_name[csvindex])
+            df = pd.read_csv('total.csv')
+            df_company = df.loc[df['회사'].isna()]
+            df = pd.concat([df, df_company])
+            df = df.drop_duplicates(['코드', '코드명', '회사', '품목군코드', '대분류코드', '중분류코드', '소분류코드', '옵션1'], keep=False)
+            df_company.to_csv("Companies.csv", index=False, encoding="utf-8-sig")
+            df_product = df.loc[df['품목군코드'].isna()]
+            df = pd.concat([df, df_product])
+            df = df.drop_duplicates(['코드', '코드명', '회사', '품목군코드', '대분류코드', '중분류코드', '소분류코드', '옵션1'], keep=False)
+            df_product.to_csv("Products.csv", index=False, encoding="utf-8-sig")
+            df_main = df.loc[df['대분류코드'].isna()]
+            df = pd.concat([df, df_main])
+            df = df.drop_duplicates(['코드', '코드명', '회사', '품목군코드', '대분류코드', '중분류코드', '소분류코드', '옵션1'], keep=False)
+            df_main.to_csv("MainCategory.csv", index=False, encoding="utf-8-sig")
+            df_mid = df.loc[df['중분류코드'].isna()]
+            df = pd.concat([df, df_mid])
+            df = df.drop_duplicates(['코드', '코드명', '회사', '품목군코드', '대분류코드', '중분류코드', '소분류코드', '옵션1'], keep=False)
+            df_mid.to_csv("MiddleCategory.csv", index=False, encoding="utf-8-sig")
+            df_sub = df.loc[df['소분류코드'].isna()]
+            df = pd.concat([df, df_sub])
+            df = df.drop_duplicates(['코드', '코드명', '회사', '품목군코드', '대분류코드', '중분류코드', '소분류코드', '옵션1'], keep=False)
+            df_sub.to_csv("SubCategory.csv", index=False, encoding="utf-8-sig")
+            df_opt1 = df.loc[df['옵션1'].isna()]
+            df = pd.concat([df, df_opt1])
+            df = df.drop_duplicates(['코드', '코드명', '회사', '품목군코드', '대분류코드', '중분류코드', '소분류코드', '옵션1'], keep=False)
+            df_opt1.to_csv("Options1.csv", index=False, encoding="utf-8-sig")
+            df_opt2 = df.loc[df['옵션1'].notna()]
+            df_opt2.to_csv("Options1.csv", index=False, encoding="utf-8-sig")
+
+
+            dfchange = pd.read_csv(list_csv_name[csvindex], encoding = 'utf-8')
+            dfchange.to_csv(list_csv_name[csvindex],index=False, encoding='cp949')
+            #os.startfile(list_csv_name[csvindex])
             status = str(list_csv_name[csvindex]) + " 여는 중."
             self.statusbar.showMessage(status)
 
-    def modify_mode_company(self):
-        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
-        i = 0
-        while self.tableWidget.item(i, 1) != self.tableWidget99.item(0, 0):
-            print(self.tableWidget.item(i, 0).text())
-            print(self.tableWidget.item(i, 1).text())
-            new_df.at[i, 'index'] = i
-            new_df.at[i, '코드'] = self.tableWidget.item(i, 0).text()
-            new_df.at[i, '코드명'] = self.tableWidget.item(i, 1).text()
-            i = i + 1
-        new_df.to_csv("Companies.csv", index=False, encoding = 'utf-8-sig')
 
-    def modify_mode_product(self):
 
-        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
-        productsdf = pd.read_csv(list_csv_name[1], encoding = 'utf-8')  # csv 파일 원본
-        rows = len(productsdf)
-        columns = len(productsdf.columns)
-        for j in range(rows):
-            for k in range(columns):
-                productsdf.iat[j, k] = str(productsdf.iat[j, k])
-        code_company_of_product = productsdf[
-            productsdf['회사'] == code_log[0]]  # 원본에서 해당 코드 선택된 상태, = 수정 전 tablewidget과 같음. #백업용
-        index_code_company_of_product = productsdf[productsdf['회사'] == code_log[0]].index  # 삭제를 위해 인덱스 추출
-        productsdf.drop(index_code_company_of_product, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
-        i = 0
-        while self.tableWidget_2.item(i, 1) != self.tableWidget99.item(0, 0):
-            print(self.tableWidget_2.item(i, 0).text())
-            print(self.tableWidget_2.item(i, 1).text())
-            new_df.at[i, 'index'] = i
-            new_df.at[i, '코드'] = self.tableWidget_2.item(i, 0).text()
-            new_df.at[i, '코드명'] = self.tableWidget_2.item(i, 1).text()
-            new_df.at[i, '회사'] = code_log[0]
-            i = i + 1
-        print(new_df)
-        productsdf = pd.concat([productsdf, new_df], ignore_index=True)
-        print(productsdf)
-        productsdf.to_csv("Products.csv", index=False, encoding = 'utf-8-sig')
-
-    def modify_mode_maincategory(self):
-
-        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
-        Maincategorydf = pd.read_csv(list_csv_name[2], encoding = 'utf-8')  # csv 파일 원본
-        rows = len(Maincategorydf)
-        columns = len(Maincategorydf.columns)
-        for j in range(rows):
-            for k in range(columns):
-                Maincategorydf.iat[j, k] = str(Maincategorydf.iat[j, k])
-        code_product_of_maincategory = Maincategorydf[Maincategorydf['품목군코드'] == code_log[1]]
-        index_code_product_of_maincategory = Maincategorydf[
-            Maincategorydf['품목군코드'] == code_log[1]].index  # 삭제를 위해 인덱스 추출
-        Maincategorydf.drop(index_code_product_of_maincategory, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
-        i = 0
-        while self.tableWidget_3.item(i, 1) != self.tableWidget99.item(0, 0):
-            print(self.tableWidget_3.item(i, 0).text())
-            print(self.tableWidget_3.item(i, 1).text())
-            new_df.at[i, 'index'] = i
-            new_df.at[i, '코드'] = self.tableWidget_3.item(i, 0).text()
-            new_df.at[i, '코드명'] = self.tableWidget_3.item(i, 1).text()
-            new_df.at[i, '회사'] = code_log[0]
-            new_df.at[i, '품목군코드'] = code_log[1]
-            i = i + 1
-        print(new_df)
-        Maincategorydf = pd.concat([Maincategorydf, new_df], ignore_index=True)
-        print(Maincategorydf)
-        Maincategorydf.to_csv("MainCategory.csv", index=False, encoding = 'utf-8-sig')
-
-    def modify_mode_middlecategory(self):
-
-        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
-        Middlecategorydf = pd.read_csv(list_csv_name[3], encoding = 'utf-8')  # csv 파일 원본
-        rows = len(Middlecategorydf)
-        columns = len(Middlecategorydf.columns)
-        for j in range(rows):
-            for k in range(columns):
-                Middlecategorydf.iat[j, k] = str(Middlecategorydf.iat[j, k])
-        code_maincateogry_of_middlecategory = Middlecategorydf[Middlecategorydf['대분류코드'] == code_log[2]]
-        index_code_maincateogry_of_middlecategory = Middlecategorydf[
-            Middlecategorydf['대분류코드'] == code_log[2]].index  # 삭제를 위해 인덱스 추출
-        print(index_code_maincateogry_of_middlecategory)
-        Middlecategorydf.drop(index_code_maincateogry_of_middlecategory, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
-        i = 0
-        while self.tableWidget_4.item(i, 1) != self.tableWidget99.item(0, 0):
-            print(self.tableWidget_4.item(i, 0).text())
-            print(self.tableWidget_4.item(i, 1).text())
-            new_df.at[i, 'index'] = i
-            new_df.at[i, '코드'] = self.tableWidget_4.item(i, 0).text()
-            new_df.at[i, '코드명'] = self.tableWidget_4.item(i, 1).text()
-            new_df.at[i, '회사'] = code_log[0]
-            new_df.at[i, '품목군코드'] = code_log[1]
-            new_df.at[i, '대분류코드'] = code_log[2]
-            i = i + 1
-        print(new_df)
-        Middlecategorydf = pd.concat([Middlecategorydf, new_df], ignore_index=True)
-        print(Middlecategorydf)
-        Middlecategorydf.to_csv("MiddleCategory.csv", index=False, encoding = 'utf-8-sig')
-
-    def modify_mode_subcategory(self):
-        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
-        Subcategorydf = pd.read_csv(list_csv_name[4], encoding = 'utf-8')  # csv 파일 원본
-        rows = len(Subcategorydf)
-        columns = len(Subcategorydf.columns)
-        for j in range(rows):
-            for k in range(columns):
-                Subcategorydf.iat[j, k] = str(Subcategorydf.iat[j, k])
-        code_middlecateogry_of_subcategory = Subcategorydf[Subcategorydf['중분류코드'] == code_log[3]]
-        index_code_middlecateogry_of_subcategory = Subcategorydf[
-            Subcategorydf['중분류코드'] == code_log[3]].index  # 삭제를 위해 인덱스 추출
-        Subcategorydf.drop(index_code_middlecateogry_of_subcategory, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
-        i = 0
-        while self.tableWidget_5.item(i, 1) != self.tableWidget99.item(0, 0):
-            print(self.tableWidget_5.item(i, 0).text())
-            print(self.tableWidget_5.item(i, 1).text())
-            new_df.at[i, 'index'] = i
-            new_df.at[i, '코드'] = self.tableWidget_5.item(i, 0).text()
-            new_df.at[i, '코드명'] = self.tableWidget_5.item(i, 1).text()
-            new_df.at[i, '회사'] = code_log[0]
-            new_df.at[i, '품목군코드'] = code_log[1]
-            new_df.at[i, '대분류코드'] = code_log[2]
-            new_df.at[i, '중분류코드'] = code_log[3]
-            i = i + 1
-        print(new_df)
-        Subcategorydf = pd.concat([Subcategorydf, new_df], ignore_index=True)
-        print(Subcategorydf)
-        Subcategorydf.to_csv("SubCategory.csv", index=False, encoding = 'utf-8-sig')
-
-    def modify_mode_option1(self):
-        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
-        Option1df = pd.read_csv(list_csv_name[5], encoding = 'utf-8')  # csv 파일 원본
-        rows = len(Option1df)
-        columns = len(Option1df.columns)
-        for j in range(rows):
-            for k in range(columns):
-                Option1df.iat[j, k] = str(Option1df.iat[j, k])
-        code_subcategory_of_option1 = Option1df[Option1df['소분류코드'] == code_log[4]]
-        index_code_subcategory_of_option1 = Option1df[Option1df['소분류코드'] == code_log[4]].index  # 삭제를 위해 인덱스 추출
-        Option1df.drop(index_code_subcategory_of_option1, axis='index', inplace=True)  # 이제 df는 삭제된 상태.
-        i = 0
-        while self.tableWidget_6.item(i, 1) != self.tableWidget99.item(0, 0):
-            print(self.tableWidget_6.item(i, 0).text())
-            print(self.tableWidget_6.item(i, 1).text())
-            new_df.at[i, 'index'] = i
-            new_df.at[i, '코드'] = self.tableWidget_6.item(i, 0).text()
-            new_df.at[i, '코드명'] = self.tableWidget_6.item(i, 1).text()
-            new_df.at[i, '회사'] = code_log[0]
-            new_df.at[i, '품목군코드'] = code_log[1]
-            new_df.at[i, '대분류코드'] = code_log[2]
-            new_df.at[i, '중분류코드'] = code_log[3]
-            new_df.at[i, '소분류코드'] = code_log[4]
-            i = i + 1
-        print(new_df)
-        Option1df = pd.concat([Option1df, new_df], ignore_index=True)
-        print(Option1df)
-        Option1df.to_csv("Options1.csv", index=False, encoding = 'utf-8-sig')
-
-    def modify_mode_option2(self):
-        new_df = pd.read_csv("case.csv", encoding = 'utf-8')
-        Options2df = pd.read_csv(list_csv_name[6], encoding = 'utf-8')  # csv 파일 원본
-        rows = len(Options2df)
-        columns = len(Options2df.columns)
-        for j in range(rows):
-            for k in range(columns):
-                Options2df.iat[j, k] = str(Options2df.iat[j, k])
-        code_option1_of_option2 = Options2df[
-            Options2df['옵션1'] == code_log[5]]  # 원본에서 해당 코드 선택된 상태, = 수정 전 tablewidget과 같음. #백업용
-        index_code_option1_of_option2 = Options2df[Options2df['옵션1'] == code_log[5]].index  # 삭제를 위해 인덱스 추출
-        Options2df.drop(index_code_option1_of_option2, axis='index', inplace=True)
-        print("Optionsdf drop 후")
-        print(Options2df)  # 이제 df는 삭제된 상태.
-        i = 0
-        while self.tableWidget_7.item(i, 1) != self.tableWidget99.item(0, 0):
-            print(self.tableWidget_7.item(i, 0).text())
-            print(self.tableWidget_7.item(i, 1).text())
-            new_df.at[i, 'index'] = i
-            new_df.at[i, '코드'] = self.tableWidget_7.item(i, 0).text()
-            new_df.at[i, '코드명'] = self.tableWidget_7.item(i, 1).text()
-            new_df.at[i, '회사'] = code_log[0]
-            new_df.at[i, '품목군코드'] = code_log[1]
-            new_df.at[i, '대분류코드'] = code_log[2]
-            new_df.at[i, '중분류코드'] = code_log[3]
-            new_df.at[i, '소분류코드'] = code_log[4]
-            new_df.at[i, '옵션1'] = code_log[5]
-            i = i + 1
-        print(new_df)
-        Options2df = pd.concat([Options2df, new_df], ignore_index=True)
-        print(Options2df)
-        Options2df.to_csv("Options2.csv", index=False, encoding = 'utf-8-sig')
-
-    def solt_data(self):
-        for i in range(7):
-            try:
-                df = pd.read_csv(list_csv_name[i], encoding='utf-8')
-            except UnicodeDecodeError:
-                df = pd.read_csv(list_csv_name[i], encoding='cp949')
-
-            df.sort_values('코드', axis=0, inplace=True)
-            df.to_csv(list_csv_name[i], index=False, encoding = 'utf-8-sig')
 
 
 if __name__ == "__main__":
@@ -906,13 +908,14 @@ if __name__ == "__main__":
     global code_log
     global code_log_reset
     global code_name_log
+    global total
 
     app = QtWidgets.QApplication(sys.argv)
-
+    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     stylesheet = qtvsc.load_stylesheet(qtvsc.Theme.DARK_VS)
     app.setStyleSheet(stylesheet)
     mainWindow = QtWidgets.QMainWindow()
-    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+
 
     list_option = ['선택', '회사', '품목군', '대분류', '중분류', '소분류', '옵션1', '옵션2']
     list_csv_name = ['Companies.csv', 'Products.csv', 'MainCategory.csv', 'MiddleCategory.csv', 'SubCategory.csv',
@@ -922,6 +925,8 @@ if __name__ == "__main__":
     code_log = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
     code_log_reset = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
     code_name_log = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
+    total = pd.read_csv("total.csv")
+    total = total.drop_duplicates(keep='first')
 
     ui = Ui_mainWindow()
 
