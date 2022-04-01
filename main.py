@@ -22,9 +22,9 @@ class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
 
         mainWindow.setObjectName("mainWindow")
-        mainWindow.resize(1280, 820)
-        mainWindow.setMinimumSize(QtCore.QSize(1280, 820))
-        mainWindow.setMaximumSize(QtCore.QSize(1280, 820))
+        mainWindow.resize(1280, 900)
+        mainWindow.setMinimumSize(QtCore.QSize(1280, 900))
+        mainWindow.setMaximumSize(QtCore.QSize(1280, 900))
         self.statusbar = QtWidgets.QStatusBar(mainWindow)
         self.statusbar.setObjectName("statusbar")
         mainWindow.setStatusBar(self.statusbar)
@@ -33,21 +33,26 @@ class Ui_mainWindow(object):
         self.centralwidget = QtWidgets.QWidget(mainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalFrame = QtWidgets.QFrame(self.centralwidget)
-        self.horizontalFrame.setGeometry(QtCore.QRect(0, 10, 1280, 781))
+        self.horizontalFrame.setGeometry(QtCore.QRect(0, 10, 1280, 861))
         self.horizontalFrame.setObjectName("horizontalFrame")
         self.tableWidget99 = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget99.setRowCount(1)
         self.tableWidget99.setColumnCount(1)  # 이부분 tableWidget의 none값의 타입을 모르겠고 인터넷에서도 관련 문서를 찾을 수가 없어서 이렇게 나둠. 비어있는지 비교하기 위한 값.
         self.tableWidget99.hide()
 
+
         self.Frame_1 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_1.setGeometry(QtCore.QRect(10, 70, 511, 231))
+        self.Frame_1.setGeometry(QtCore.QRect(10, 70, 511, 251))
         self.Frame_1.setObjectName("Frame_1")
         self.label_1 = QtWidgets.QLabel(self.Frame_1)
-        self.label_1.setGeometry(QtCore.QRect(0, 0, 60, 16))
+        self.label_1.setGeometry(QtCore.QRect(10, 10, 60, 16))
         self.label_1.setObjectName("label_1")
+        self.checkBox = QtWidgets.QCheckBox(self.Frame_1)
+        self.checkBox.setGeometry(QtCore.QRect(410, 5, 87, 20))
+        self.checkBox.setObjectName("checkBox")
+        self.checkBox.toggle()
         self.tableWidget = QtWidgets.QTableWidget(self.Frame_1)
-        self.tableWidget.setGeometry(QtCore.QRect(0, 20, 511, 211))
+        self.tableWidget.setGeometry(QtCore.QRect(0, 40, 511, 211))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(2)
         self.tableWidget.setRowCount(10)
@@ -61,13 +66,17 @@ class Ui_mainWindow(object):
         self.company_tablewidget_set()
 
         self.Frame_2 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_2.setGeometry(QtCore.QRect(10, 310, 511, 231))
+        self.Frame_2.setGeometry(QtCore.QRect(10, 330, 511, 251))
         self.Frame_2.setObjectName("Frame_2")
         self.label_2 = QtWidgets.QLabel(self.Frame_2)
-        self.label_2.setGeometry(QtCore.QRect(0, 0, 60, 16))
+        self.label_2.setGeometry(QtCore.QRect(10, 10, 60, 16))
         self.label_2.setObjectName("label_2")
+        self.checkBox_2 = QtWidgets.QCheckBox(self.Frame_2)
+        self.checkBox_2.setGeometry(QtCore.QRect(410, 5, 87, 20))
+        self.checkBox_2.setObjectName("checkBox_2")
+        self.checkBox_2.toggle()
         self.tableWidget_2 = QtWidgets.QTableWidget(self.Frame_2)
-        self.tableWidget_2.setGeometry(QtCore.QRect(0, 20, 511, 211))
+        self.tableWidget_2.setGeometry(QtCore.QRect(0, 40, 511, 211))
         self.tableWidget_2.setObjectName("tableWidget_2")
         self.tableWidget_2.setColumnCount(2)
         self.tableWidget_2.setRowCount(100)
@@ -79,13 +88,17 @@ class Ui_mainWindow(object):
         self.tableWidget_2.cellClicked.connect(self.products_tablewidget_changed2)
 
         self.Frame_3 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_3.setGeometry(QtCore.QRect(10, 550, 511, 231))
+        self.Frame_3.setGeometry(QtCore.QRect(10, 590, 511, 251))
         self.Frame_3.setObjectName("Frame_3")
         self.label_3 = QtWidgets.QLabel(self.Frame_3)
-        self.label_3.setGeometry(QtCore.QRect(0, 0, 60, 16))
+        self.label_3.setGeometry(QtCore.QRect(10, 10, 60, 16))
         self.label_3.setObjectName("label_3")
+        self.checkBox_3 = QtWidgets.QCheckBox(self.Frame_3)
+        self.checkBox_3.setGeometry(QtCore.QRect(410, 5, 87, 20))
+        self.checkBox_3.setObjectName("checkBox_3")
+        self.checkBox_3.toggle()
         self.tableWidget_3 = QtWidgets.QTableWidget(self.Frame_3)
-        self.tableWidget_3.setGeometry(QtCore.QRect(0, 20, 511, 211))
+        self.tableWidget_3.setGeometry(QtCore.QRect(0, 40, 511, 211))
         self.tableWidget_3.setObjectName("tableWidget_3")
         self.tableWidget_3.setColumnCount(2)
         self.tableWidget_3.setRowCount(100)
@@ -97,13 +110,17 @@ class Ui_mainWindow(object):
         self.tableWidget_3.cellClicked.connect(self.maincategory_tablewidget_changed2)
 
         self.Frame_4 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_4.setGeometry(QtCore.QRect(540, 70, 351, 351))
+        self.Frame_4.setGeometry(QtCore.QRect(540, 70, 351, 381))
         self.Frame_4.setObjectName("Frame_4")
         self.label_4 = QtWidgets.QLabel(self.Frame_4)
-        self.label_4.setGeometry(QtCore.QRect(0, 0, 60, 16))
+        self.label_4.setGeometry(QtCore.QRect(10, 10, 60, 16))
         self.label_4.setObjectName("label_4")
+        self.checkBox_4 = QtWidgets.QCheckBox(self.Frame_4)
+        self.checkBox_4.setGeometry(QtCore.QRect(250, 5, 87, 20))
+        self.checkBox_4.setObjectName("checkBox_4")
+        self.checkBox_4.toggle()
         self.tableWidget_4 = QtWidgets.QTableWidget(self.Frame_4)
-        self.tableWidget_4.setGeometry(QtCore.QRect(0, 20, 351, 331))
+        self.tableWidget_4.setGeometry(QtCore.QRect(0, 40, 351, 331))
         self.tableWidget_4.setObjectName("tableWidget_4")
         self.tableWidget_4.setColumnCount(2)
         self.tableWidget_4.setRowCount(100)
@@ -115,13 +132,17 @@ class Ui_mainWindow(object):
         self.tableWidget_4.cellClicked.connect(self.middlecategory_tablewidget_changed2)
 
         self.Frame_5 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_5.setGeometry(QtCore.QRect(540, 430, 351, 351))
+        self.Frame_5.setGeometry(QtCore.QRect(540, 460, 351, 381))
         self.Frame_5.setObjectName("Frame_5")
         self.label_5 = QtWidgets.QLabel(self.Frame_5)
-        self.label_5.setGeometry(QtCore.QRect(0, 0, 60, 16))
+        self.label_5.setGeometry(QtCore.QRect(10, 10, 60, 16))
         self.label_5.setObjectName("label_5")
+        self.checkBox_5 = QtWidgets.QCheckBox(self.Frame_5)
+        self.checkBox_5.setGeometry(QtCore.QRect(250, 5, 87, 20))
+        self.checkBox_5.setObjectName("checkBox_5")
+        self.checkBox_5.toggle()
         self.tableWidget_5 = QtWidgets.QTableWidget(self.Frame_5)
-        self.tableWidget_5.setGeometry(QtCore.QRect(0, 20, 351, 331))
+        self.tableWidget_5.setGeometry(QtCore.QRect(0, 40, 351, 331))
         self.tableWidget_5.setObjectName("tableWidget_5")
         self.tableWidget_5.setColumnCount(2)
         self.tableWidget_5.setRowCount(100)
@@ -133,13 +154,17 @@ class Ui_mainWindow(object):
         self.tableWidget_5.cellClicked.connect(self.subcategory_tablewidget_changed2)
 
         self.Frame_6 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_6.setGeometry(QtCore.QRect(910, 70, 351, 351))
+        self.Frame_6.setGeometry(QtCore.QRect(910, 70, 351, 381))
         self.Frame_6.setObjectName("Frame_6")
         self.label_6 = QtWidgets.QLabel(self.Frame_6)
-        self.label_6.setGeometry(QtCore.QRect(0, 0, 60, 16))
+        self.label_6.setGeometry(QtCore.QRect(10, 10, 60, 16))
         self.label_6.setObjectName("label_6")
+        self.checkBox_6 = QtWidgets.QCheckBox(self.Frame_6)
+        self.checkBox_6.setGeometry(QtCore.QRect(250, 5, 87, 20))
+        self.checkBox_6.setObjectName("checkBox_6")
+        self.checkBox_6.toggle()
         self.tableWidget_6 = QtWidgets.QTableWidget(self.Frame_6)
-        self.tableWidget_6.setGeometry(QtCore.QRect(0, 20, 351, 331))
+        self.tableWidget_6.setGeometry(QtCore.QRect(0, 40, 351, 331))
         self.tableWidget_6.setObjectName("tableWidget_6")
         self.tableWidget_6.setColumnCount(2)
         self.tableWidget_6.setRowCount(100)
@@ -151,13 +176,17 @@ class Ui_mainWindow(object):
         self.tableWidget_6.cellClicked.connect(self.option1_tablewidget_changed2)
 
         self.Frame_7 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_7.setGeometry(QtCore.QRect(910, 430, 351, 351))
+        self.Frame_7.setGeometry(QtCore.QRect(910, 460, 351, 381))
         self.Frame_7.setObjectName("Frame_7")
         self.label_7 = QtWidgets.QLabel(self.Frame_7)
-        self.label_7.setGeometry(QtCore.QRect(0, 0, 60, 16))
+        self.label_7.setGeometry(QtCore.QRect(10, 10, 60, 16))
         self.label_7.setObjectName("label_7")
+        self.checkBox_7 = QtWidgets.QCheckBox(self.Frame_7)
+        self.checkBox_7.setGeometry(QtCore.QRect(250, 5, 87, 20))
+        self.checkBox_7.setObjectName("checkBox_7")
+        self.checkBox_7.toggle()
         self.tableWidget_7 = QtWidgets.QTableWidget(self.Frame_7)
-        self.tableWidget_7.setGeometry(QtCore.QRect(0, 20, 351, 331))
+        self.tableWidget_7.setGeometry(QtCore.QRect(0, 40, 351, 331))
         self.tableWidget_7.setObjectName("tableWidget_7")
         self.tableWidget_7.setColumnCount(2)
         self.tableWidget_7.setRowCount(100)
@@ -188,7 +217,7 @@ class Ui_mainWindow(object):
         self.textEdit_2.setGeometry(QtCore.QRect(270, 30, 341, 31))
         self.textEdit_2.setObjectName("textEdit_2")
         self.textEdit_2.setTextInteractionFlags(QtCore.Qt.TextSelectableByKeyboard | QtCore.Qt.TextSelectableByMouse)
-        self.textEdit_2.hide()
+
         self.pushButton = QtWidgets.QPushButton(self.horizontalFrame)
         self.pushButton.setGeometry(QtCore.QRect(1130, 20, 131, 41))
         self.pushButton.setObjectName("pushButton")
@@ -290,9 +319,23 @@ class Ui_mainWindow(object):
             self.code_logging(0," ")
             self.code_name_logging(0, " ")
 
+    def loading(self):
+        df1 = pd.read_csv(list_csv_name[0])
+        df2 = pd.read_csv(list_csv_name[1])
+        df3 = pd.read_csv(list_csv_name[2])
+        df4 = pd.read_csv(list_csv_name[3])
+        df5 = pd.read_csv(list_csv_name[4])
+        df6 = pd.read_csv(list_csv_name[5])
+        df7 = pd.read_csv(list_csv_name[6])
+
+        df1 = pd.concat([df1,df2,df3,df4,df5,df6,df7])
+        df1.to_csv("total.csv", encoding='utf-8-sig', index=False)
+
+
+
     def retranslateUi(self, mainWindow):
         _translate = QtCore.QCoreApplication.translate
-        mainWindow.setWindowTitle(_translate("mainWindow", "MainWindow"))
+        mainWindow.setWindowTitle(_translate("mainWindow", "품목분류코드 생성기"))
         self.label_1.setText(_translate("mainWindow", "회사"))
         self.label_2.setText(_translate("mainWindow", "품목군"))
         self.label_3.setText(_translate("mainWindow", "대분류"))
@@ -301,10 +344,10 @@ class Ui_mainWindow(object):
         self.label_6.setText(_translate("mainWindow", "옵션1"))
         self.label_7.setText(_translate("mainWindow", "옵션2"))
         self.label_8.setText(_translate("mainWindow", "품목 코드"))
-        #self.label_9.setText(_translate("mainWindow", "품목명 코드"))
+        self.label_9.setText(_translate("mainWindow", "품목명 코드"))
         self.pushButton.setText(_translate("mainWindow", "CSV 파일 열기"))
         self.pushButton_3.setText(_translate("mainWindow", "수정 모드 꺼짐"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "선택"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "전체"))
         self.comboBox.setItemText(1, _translate("MainWindow", "회사"))
         self.comboBox.setItemText(2, _translate("MainWindow", "품목군"))
         self.comboBox.setItemText(3, _translate("MainWindow", "대분류"))
@@ -312,6 +355,14 @@ class Ui_mainWindow(object):
         self.comboBox.setItemText(5, _translate("MainWindow", "소분류"))
         self.comboBox.setItemText(6, _translate("MainWindow", "옵션1"))
         self.comboBox.setItemText(7, _translate("MainWindow", "옵션2"))
+        self.checkBox.setText(_translate("mainWindow", "품목명 표시"))
+        self.checkBox_4.setText(_translate("mainWindow", "품목명 표시"))
+        self.checkBox_5.setText(_translate("mainWindow", "품목명 표시"))
+        self.checkBox_2.setText(_translate("mainWindow", "품목명 표시"))
+        self.checkBox_3.setText(_translate("mainWindow", "품목명 표시"))
+        self.checkBox_7.setText(_translate("mainWindow", "품목명 표시"))
+        self.checkBox_6.setText(_translate("mainWindow", "품목명 표시"))
+
 
     def cleaner_combobox_tableWidget(self, where):
         if where < 7:
@@ -330,6 +381,7 @@ class Ui_mainWindow(object):
                                     self.tableWidget.clear()
 
     def company_tablewidget_set(self):
+        self.loading()
         df_company = total.loc[total['회사'].isna()]
         self.tableWidget.setRowCount(len(df_company.index.tolist()) + 1)
         for i in range(0, len(df_company.index.tolist()), 1):
@@ -801,6 +853,8 @@ class Ui_mainWindow(object):
 
         elif where == 1:
             self.textEdit_2.clear()
+            if self.checkBox.isChecked() == False:
+                codename = ""
             code_name_log[0] = codename
             code_name_log[1] = code_log_reset[1]
             code_name_log[2] = code_log_reset[2]
@@ -812,6 +866,8 @@ class Ui_mainWindow(object):
             self.textEdit_2.setText(result)
         elif where == 2:
             self.textEdit_2.clear()
+            if self.checkBox_2.isChecked() == False:
+                codename = ""
             code_name_log[1] = codename
             code_name_log[2] = code_log_reset[2]
             code_name_log[3] = code_log_reset[3]
@@ -822,6 +878,8 @@ class Ui_mainWindow(object):
             self.textEdit_2.setText(result)
         elif where == 3:
             self.textEdit_2.clear()
+            if self.checkBox_3.isChecked() == False:
+                codename = ""
             code_name_log[2] = codename
             code_name_log[3] = code_log_reset[3]
             code_name_log[4] = code_log_reset[4]
@@ -831,6 +889,8 @@ class Ui_mainWindow(object):
             self.textEdit_2.setText(result)
         elif where == 4:
             self.textEdit_2.clear()
+            if self.checkBox_4.isChecked() == False:
+                codename = ""
             code_name_log[3] = codename
             code_name_log[4] = code_log_reset[4]
             code_name_log[5] = code_log_reset[5]
@@ -839,6 +899,8 @@ class Ui_mainWindow(object):
             self.textEdit_2.setText(result)
         elif where == 5:
             self.textEdit_2.clear()
+            if self.checkBox_5.isChecked() == False:
+                codename = ""
             code_name_log[4] = codename
             code_name_log[5] = code_log_reset[5]
             code_name_log[6] = code_log_reset[6]
@@ -846,19 +908,26 @@ class Ui_mainWindow(object):
             self.textEdit_2.setText(result)
         elif where == 6:
             self.textEdit_2.clear()
+            if self.checkBox_6.isChecked() == False:
+                codename = ""
             code_name_log[5] = codename
             code_name_log[6] = code_log_reset[6]
             result = ' '.join(s for s in code_name_log)
             self.textEdit_2.setText(result)
         elif where == 7:
             self.textEdit_2.clear()
+            if self.checkBox_7.isChecked() == False:
+                codename = ""
             code_name_log[6] = codename
             result = ' '.join(s for s in code_name_log)
             self.textEdit_2.setText(result)
 
+
     def open_button_event(self, bool):
         if bool:
             csvindex = self.comboBox.currentIndex() - 1
+            if csvindex == -1:
+                csvindex = 7
             df = pd.read_csv('total.csv')
             df_company = df.loc[df['회사'].isna()]
             df = pd.concat([df, df_company])
@@ -885,11 +954,11 @@ class Ui_mainWindow(object):
             df = df.drop_duplicates(['코드', '코드명', '회사', '품목군코드', '대분류코드', '중분류코드', '소분류코드', '옵션1'], keep=False)
             df_opt1.to_csv("Options1.csv", index=False, encoding="utf-8-sig")
             df_opt2 = df.loc[df['옵션1'].notna()]
-            df_opt2.to_csv("Options1.csv", index=False, encoding="utf-8-sig")
+            df_opt2.to_csv("Options2.csv", index=False, encoding="utf-8-sig")
 
 
             dfchange = pd.read_csv(list_csv_name[csvindex], encoding = 'utf-8')
-            dfchange.to_csv(list_csv_name[csvindex],index=False, encoding='cp949')
+            dfchange.to_csv(list_csv_name[csvindex],index=False, encoding='utf-8-sig')
             #os.startfile(list_csv_name[csvindex])
             status = str(list_csv_name[csvindex]) + " 여는 중."
             self.statusbar.showMessage(status)
@@ -917,9 +986,9 @@ if __name__ == "__main__":
     mainWindow = QtWidgets.QMainWindow()
 
 
-    list_option = ['선택', '회사', '품목군', '대분류', '중분류', '소분류', '옵션1', '옵션2']
+    list_option = ['전체', '회사', '품목군', '대분류', '중분류', '소분류', '옵션1', '옵션2']
     list_csv_name = ['Companies.csv', 'Products.csv', 'MainCategory.csv', 'MiddleCategory.csv', 'SubCategory.csv',
-                     'Options1.csv', 'Options2.csv']
+                     'Options1.csv', 'Options2.csv','total']
     list_csv = ['companies', 'products', 'maincategory', 'middlecategory', 'subcategory',
                 'options1', 'options2']
     code_log = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
@@ -927,7 +996,7 @@ if __name__ == "__main__":
     code_name_log = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
     total = pd.read_csv("total.csv")
     total = total.drop_duplicates(keep='first')
-
+    qtvsc.list_color_id()
     ui = Ui_mainWindow()
 
     ui.setupUi(mainWindow)
