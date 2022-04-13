@@ -1,8 +1,8 @@
 import os
-
 import pandas as pd
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QTableWidgetItem, QAbstractItemView
+from PyQt5.QtGui import QPixmap, QIcon
 from qt_material import apply_stylesheet
 
 os.environ['QT_API'] = 'pyqt5'
@@ -14,17 +14,17 @@ class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
 
         mainWindow.setObjectName("mainWindow")
-        mainWindow.resize(1280, 900)
-        mainWindow.setMinimumSize(QtCore.QSize(1280, 900))
-        mainWindow.setMaximumSize(QtCore.QSize(1280, 900))
+        mainWindow.resize(940, 721)
+        mainWindow.setMinimumSize(QtCore.QSize(940, 721))
+        mainWindow.setMaximumSize(QtCore.QSize(940, 721))
         self.statusbar = QtWidgets.QStatusBar(mainWindow)
-        self.statusbar.setObjectName("statusbar")
-        mainWindow.setStatusBar(self.statusbar)
+        self.statusbar = QtWidgets.QStatusBar(mainWindow)
+
 
         self.centralwidget = QtWidgets.QWidget(mainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalFrame = QtWidgets.QFrame(self.centralwidget)
-        self.horizontalFrame.setGeometry(QtCore.QRect(0, 10, 1280, 861))
+        self.horizontalFrame.setGeometry(QtCore.QRect(0, 0, 940, 721))
         self.horizontalFrame.setObjectName("horizontalFrame")
         self.tableWidget99 = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget99.setRowCount(1)
@@ -32,7 +32,7 @@ class Ui_mainWindow(object):
         self.tableWidget99.hide()
 
         self.Frame_1 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_1.setGeometry(QtCore.QRect(10, 70, 511, 251))
+        self.Frame_1.setGeometry(QtCore.QRect(10, 60, 321, 211))
         self.Frame_1.setObjectName("Frame_1")
         self.label_1 = QtWidgets.QLabel(self.Frame_1)
         self.label_1.setGeometry(QtCore.QRect(10, 10, 60, 16))
@@ -43,14 +43,14 @@ class Ui_mainWindow(object):
         # self.checkBox.toggle()
         self.checkBox.hide()
         self.pushButton_11 = QtWidgets.QPushButton(self.Frame_1)
-        self.pushButton_11.setGeometry(QtCore.QRect(315, 5, 60, 32))
+        self.pushButton_11.setGeometry(QtCore.QRect(185, 5, 40, 30))
         self.pushButton_11.setObjectName("pushButton_2")
 
         self.pushButton_11.setCheckable(True)
 
 
         self.pushButton_12 = QtWidgets.QPushButton(self.Frame_1)
-        self.pushButton_12.setGeometry(QtCore.QRect(380, 5, 60, 32))
+        self.pushButton_12.setGeometry(QtCore.QRect(230,5, 40, 30))
         self.pushButton_12.setObjectName("pushButton_4")
 
         self.pushButton_12.setDisabled(True)
@@ -58,14 +58,14 @@ class Ui_mainWindow(object):
 
 
         self.pushButton_13 = QtWidgets.QPushButton(self.Frame_1)
-        self.pushButton_13.setGeometry(QtCore.QRect(445, 5, 60, 32))
+        self.pushButton_13.setGeometry(QtCore.QRect(275,5, 40, 30))
         self.pushButton_13.setObjectName("pushButton_5")
 
 
         self.pushButton_13.setDisabled(True)
 
         self.tableWidget = QtWidgets.QTableWidget(self.Frame_1)
-        self.tableWidget.setGeometry(QtCore.QRect(0, 40, 511, 211))
+        self.tableWidget.setGeometry(QtCore.QRect(0, 40, 321, 171))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(2)
         self.tableWidget.setRowCount(2)
@@ -83,30 +83,30 @@ class Ui_mainWindow(object):
 
 
         self.Frame_2 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_2.setGeometry(QtCore.QRect(10, 330, 511, 251))
+        self.Frame_2.setGeometry(QtCore.QRect(10, 275, 321, 211))
         self.Frame_2.setObjectName("Frame_2")
         self.label_2 = QtWidgets.QLabel(self.Frame_2)
         self.label_2.setGeometry(QtCore.QRect(10, 10, 60, 16))
         self.label_2.setObjectName("label_2")
         self.checkBox_2 = QtWidgets.QCheckBox(self.Frame_2)
-        self.checkBox_2.setGeometry(QtCore.QRect(220, 10, 100, 20))
+        self.checkBox_2.setGeometry(QtCore.QRect(100, 10, 100, 20))
         self.checkBox_2.setObjectName("checkBox_2")
         self.checkBox_2.toggle()
         self.pushButton_21 = QtWidgets.QPushButton(self.Frame_2)
-        self.pushButton_21.setGeometry(QtCore.QRect(315, 5, 60, 32))
+        self.pushButton_21.setGeometry(QtCore.QRect(185,5,40,30))
         self.pushButton_21.setObjectName("pushButton_2")
 
         self.pushButton_21.setCheckable(True)
 
 
         self.pushButton_22 = QtWidgets.QPushButton(self.Frame_2)
-        self.pushButton_22.setGeometry(QtCore.QRect(380, 5, 60, 32))
+        self.pushButton_22.setGeometry(QtCore.QRect(230,5, 40, 30))
         self.pushButton_22.setObjectName("pushButton_4")
 
         self.pushButton_22.setDisabled(True)
 
         self.pushButton_23 = QtWidgets.QPushButton(self.Frame_2)
-        self.pushButton_23.setGeometry(QtCore.QRect(445, 5, 60, 32))
+        self.pushButton_23.setGeometry(QtCore.QRect(275,5, 40, 30))
         self.pushButton_23.setObjectName("pushButton_5")
 
         self.pushButton_23.setDisabled(True)
@@ -114,7 +114,7 @@ class Ui_mainWindow(object):
 
 
         self.tableWidget_2 = QtWidgets.QTableWidget(self.Frame_2)
-        self.tableWidget_2.setGeometry(QtCore.QRect(0, 40, 511, 211))
+        self.tableWidget_2.setGeometry(QtCore.QRect(0, 40, 321, 171))
         self.tableWidget_2.setObjectName("tableWidget_2")
         self.tableWidget_2.setColumnCount(2)
         self.tableWidget_2.setRowCount(2)
@@ -126,28 +126,28 @@ class Ui_mainWindow(object):
 
 
         self.Frame_3 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_3.setGeometry(QtCore.QRect(10, 590, 511, 251))
+        self.Frame_3.setGeometry(QtCore.QRect(10, 490, 321, 211))
         self.Frame_3.setObjectName("Frame_3")
         self.label_3 = QtWidgets.QLabel(self.Frame_3)
         self.label_3.setGeometry(QtCore.QRect(10, 10, 60, 16))
         self.label_3.setObjectName("label_3")
         self.checkBox_3 = QtWidgets.QCheckBox(self.Frame_3)
-        self.checkBox_3.setGeometry(QtCore.QRect(220, 10, 100, 20))
+        self.checkBox_3.setGeometry(QtCore.QRect(100, 10, 100, 20))
         self.checkBox_3.setObjectName("checkBox_3")
         self.checkBox_3.toggle()
         self.pushButton_31 = QtWidgets.QPushButton(self.Frame_3)
-        self.pushButton_31.setGeometry(QtCore.QRect(315, 5, 60, 32))
+        self.pushButton_31.setGeometry(QtCore.QRect(185,5,40,30))
         self.pushButton_31.setObjectName("pushButton_2")
 
 
 
 
         self.pushButton_32 = QtWidgets.QPushButton(self.Frame_3)
-        self.pushButton_32.setGeometry(QtCore.QRect(380, 5, 60, 32))
+        self.pushButton_32.setGeometry(QtCore.QRect(230,5, 40, 30))
         self.pushButton_32.setObjectName("pushButton_4")
 
         self.pushButton_33 = QtWidgets.QPushButton(self.Frame_3)
-        self.pushButton_33.setGeometry(QtCore.QRect(445, 5, 60, 32))
+        self.pushButton_33.setGeometry(QtCore.QRect(275,5, 40, 30))
         self.pushButton_33.setObjectName("pushButton_5")
 
         self.pushButton_31.setCheckable(True)
@@ -156,7 +156,7 @@ class Ui_mainWindow(object):
 
 
         self.tableWidget_3 = QtWidgets.QTableWidget(self.Frame_3)
-        self.tableWidget_3.setGeometry(QtCore.QRect(0, 40, 511, 211))
+        self.tableWidget_3.setGeometry(QtCore.QRect(0, 40,  321, 171))
         self.tableWidget_3.setObjectName("tableWidget_3")
         self.tableWidget_3.setColumnCount(2)
         self.tableWidget_3.setRowCount(1)
@@ -169,7 +169,7 @@ class Ui_mainWindow(object):
 
 
         self.Frame_4 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_4.setGeometry(QtCore.QRect(540, 70, 351, 381))
+        self.Frame_4.setGeometry(QtCore.QRect(340, 60, 291, 321))
         self.Frame_4.setObjectName("Frame_4")
         self.label_4 = QtWidgets.QLabel(self.Frame_4)
         self.label_4.setGeometry(QtCore.QRect(10, 10, 60, 16))
@@ -180,18 +180,18 @@ class Ui_mainWindow(object):
         # self.checkBox_4.toggle()
         self.checkBox_4.hide()
         self.pushButton_41 = QtWidgets.QPushButton(self.Frame_4)
-        self.pushButton_41.setGeometry(QtCore.QRect(155, 5, 60, 32))
+        self.pushButton_41.setGeometry(QtCore.QRect(155, 5, 40, 30))
         self.pushButton_41.setObjectName("pushButton_2")
 
 
 
 
         self.pushButton_42 = QtWidgets.QPushButton(self.Frame_4)
-        self.pushButton_42.setGeometry(QtCore.QRect(220, 5, 60, 32))
+        self.pushButton_42.setGeometry(QtCore.QRect(200, 5, 40, 30))
         self.pushButton_42.setObjectName("pushButton_4")
 
         self.pushButton_43 = QtWidgets.QPushButton(self.Frame_4)
-        self.pushButton_43.setGeometry(QtCore.QRect(285, 5, 60, 32))
+        self.pushButton_43.setGeometry(QtCore.QRect(245, 5, 40, 30))
         self.pushButton_43.setObjectName("pushButton_5")
 
         self.pushButton_41.setCheckable(True)
@@ -200,7 +200,7 @@ class Ui_mainWindow(object):
 
 
         self.tableWidget_4 = QtWidgets.QTableWidget(self.Frame_4)
-        self.tableWidget_4.setGeometry(QtCore.QRect(0, 40, 351, 331))
+        self.tableWidget_4.setGeometry(QtCore.QRect(0, 40, 291, 281))
         self.tableWidget_4.setObjectName("tableWidget_4")
         self.tableWidget_4.setColumnCount(2)
         self.tableWidget_4.setRowCount(1)
@@ -213,7 +213,7 @@ class Ui_mainWindow(object):
 
 
         self.Frame_5 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_5.setGeometry(QtCore.QRect(540, 460, 351, 381))
+        self.Frame_5.setGeometry(QtCore.QRect(340, 390,291, 311))
         self.Frame_5.setObjectName("Frame_5")
         self.label_5 = QtWidgets.QLabel(self.Frame_5)
         self.label_5.setGeometry(QtCore.QRect(10, 10, 60, 16))
@@ -224,18 +224,15 @@ class Ui_mainWindow(object):
         # self.checkBox_5.toggle()
         self.checkBox_5.hide()
         self.pushButton_51 = QtWidgets.QPushButton(self.Frame_5)
-        self.pushButton_51.setGeometry(QtCore.QRect(155, 5, 60, 32))
+        self.pushButton_51.setGeometry(QtCore.QRect(155, 5, 40, 30))
         self.pushButton_51.setObjectName("pushButton_2")
 
-
-
-
         self.pushButton_52 = QtWidgets.QPushButton(self.Frame_5)
-        self.pushButton_52.setGeometry(QtCore.QRect(220, 5, 60, 32))
+        self.pushButton_52.setGeometry(QtCore.QRect(200, 5, 40, 30))
         self.pushButton_52.setObjectName("pushButton_4")
 
         self.pushButton_53 = QtWidgets.QPushButton(self.Frame_5)
-        self.pushButton_53.setGeometry(QtCore.QRect(285, 5, 60, 32))
+        self.pushButton_53.setGeometry(QtCore.QRect(245, 5, 40, 30))
         self.pushButton_53.setObjectName("pushButton_5")
 
         self.pushButton_51.setCheckable(True)
@@ -243,7 +240,7 @@ class Ui_mainWindow(object):
         self.pushButton_53.setDisabled(True)
 
         self.tableWidget_5 = QtWidgets.QTableWidget(self.Frame_5)
-        self.tableWidget_5.setGeometry(QtCore.QRect(0, 40, 351, 331))
+        self.tableWidget_5.setGeometry(QtCore.QRect(0, 40, 291, 271))
         self.tableWidget_5.setObjectName("tableWidget_5")
         self.tableWidget_5.setColumnCount(2)
         self.tableWidget_5.setRowCount(1)
@@ -258,7 +255,7 @@ class Ui_mainWindow(object):
 
 
         self.Frame_6 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_6.setGeometry(QtCore.QRect(910, 70, 351, 381))
+        self.Frame_6.setGeometry(QtCore.QRect(640, 60, 291, 321))
         self.Frame_6.setObjectName("Frame_6")
         self.label_6 = QtWidgets.QLabel(self.Frame_6)
         self.label_6.setGeometry(QtCore.QRect(10, 10, 60, 16))
@@ -270,18 +267,18 @@ class Ui_mainWindow(object):
         self.checkBox_6.hide()
 
         self.pushButton_61 = QtWidgets.QPushButton(self.Frame_6)
-        self.pushButton_61.setGeometry(QtCore.QRect(155, 5, 60, 32))
+        self.pushButton_61.setGeometry(QtCore.QRect(155, 5, 40, 30))
         self.pushButton_61.setObjectName("pushButton_2")
 
         self.pushButton_61.setCheckable(True)
 
 
         self.pushButton_62 = QtWidgets.QPushButton(self.Frame_6)
-        self.pushButton_62.setGeometry(QtCore.QRect(220, 5, 60, 32))
+        self.pushButton_62.setGeometry(QtCore.QRect(200, 5, 40, 30))
         self.pushButton_62.setObjectName("pushButton_4")
 
         self.pushButton_63 = QtWidgets.QPushButton(self.Frame_6)
-        self.pushButton_63.setGeometry(QtCore.QRect(285, 5, 60, 32))
+        self.pushButton_63.setGeometry(QtCore.QRect(245, 5, 40, 30))
         self.pushButton_63.setObjectName("pushButton_5")
 
         self.pushButton_61.setCheckable(True)
@@ -290,7 +287,7 @@ class Ui_mainWindow(object):
 
 
         self.tableWidget_6 = QtWidgets.QTableWidget(self.Frame_6)
-        self.tableWidget_6.setGeometry(QtCore.QRect(0, 40, 351, 331))
+        self.tableWidget_6.setGeometry(QtCore.QRect(0, 40, 291, 281))
         self.tableWidget_6.setObjectName("tableWidget_6")
         self.tableWidget_6.setColumnCount(2)
         self.tableWidget_6.setRowCount(1)
@@ -303,7 +300,7 @@ class Ui_mainWindow(object):
 
 
         self.Frame_7 = QtWidgets.QFrame(self.horizontalFrame)
-        self.Frame_7.setGeometry(QtCore.QRect(910, 460, 351, 381))
+        self.Frame_7.setGeometry(QtCore.QRect(640, 390, 291, 311))
         self.Frame_7.setObjectName("Frame_7")
         self.label_7 = QtWidgets.QLabel(self.Frame_7)
         self.label_7.setGeometry(QtCore.QRect(10, 10, 60, 16))
@@ -314,18 +311,18 @@ class Ui_mainWindow(object):
         # self.checkBox_7.toggle()
         self.checkBox_7.hide()
         self.pushButton_71 = QtWidgets.QPushButton(self.Frame_7)
-        self.pushButton_71.setGeometry(QtCore.QRect(155, 5, 60, 32))
+        self.pushButton_71.setGeometry(QtCore.QRect(155, 5, 40, 30))
         self.pushButton_71.setObjectName("pushButton_2")
 
         self.pushButton_71.setCheckable(True)
 
 
         self.pushButton_72 = QtWidgets.QPushButton(self.Frame_7)
-        self.pushButton_72.setGeometry(QtCore.QRect(220, 5, 60, 32))
+        self.pushButton_72.setGeometry(QtCore.QRect(200, 5, 40, 30))
         self.pushButton_72.setObjectName("pushButton_4")
 
         self.pushButton_73 = QtWidgets.QPushButton(self.Frame_7)
-        self.pushButton_73.setGeometry(QtCore.QRect(285, 5, 60, 32))
+        self.pushButton_73.setGeometry(QtCore.QRect(245, 5, 40, 30))
         self.pushButton_73.setObjectName("pushButton_5")
 
         self.pushButton_71.setCheckable(True)
@@ -333,7 +330,7 @@ class Ui_mainWindow(object):
         self.pushButton_73.setDisabled(True)
 
         self.tableWidget_7 = QtWidgets.QTableWidget(self.Frame_7)
-        self.tableWidget_7.setGeometry(QtCore.QRect(0, 40, 351, 331))
+        self.tableWidget_7.setGeometry(QtCore.QRect(0, 40, 291, 271))
         self.tableWidget_7.setObjectName("tableWidget_7")
         self.tableWidget_7.setColumnCount(2)
         self.tableWidget_7.setRowCount(1)
@@ -346,27 +343,27 @@ class Ui_mainWindow(object):
 
 
         self.label_8 = QtWidgets.QLabel(self.horizontalFrame)
-        self.label_8.setGeometry(QtCore.QRect(10, 5, 81, 16))
+        self.label_8.setGeometry(QtCore.QRect(10, 10, 81, 16))
         self.label_8.setObjectName("label_8")
         self.label_9 = QtWidgets.QLabel(self.horizontalFrame)
-        self.label_9.setGeometry(QtCore.QRect(270, 5, 81, 16))
+        self.label_9.setGeometry(QtCore.QRect(180, 10, 81, 16))
         self.label_9.setObjectName("label_9")
 
         self.comboBox = QtWidgets.QComboBox(self.horizontalFrame)
-        self.comboBox.setGeometry(QtCore.QRect(980, 30, 141, 31))
+        self.comboBox.setGeometry(QtCore.QRect(700, 15, 101, 31))
         self.comboBox.setObjectName("comboBox")
 
         self.textEdit = QtWidgets.QTextEdit(self.horizontalFrame)
-        self.textEdit.setGeometry(QtCore.QRect(10, 25, 251, 36))
+        self.textEdit.setGeometry(QtCore.QRect(10, 30, 161, 20))
         self.textEdit.setObjectName("textEdit")
 
         self.textEdit_2 = QtWidgets.QTextEdit(self.horizontalFrame)
-        self.textEdit_2.setGeometry(QtCore.QRect(270, 25, 401, 36))
+        self.textEdit_2.setGeometry(QtCore.QRect(180, 30, 251, 20))
         self.textEdit_2.setObjectName("textEdit_2")
 
 
         self.pushButton = QtWidgets.QPushButton(self.horizontalFrame)
-        self.pushButton.setGeometry(QtCore.QRect(1130, 30, 121, 31))
+        self.pushButton.setGeometry(QtCore.QRect(810, 15, 121, 31))
         self.pushButton.setObjectName("pushButton")
 
 
@@ -383,8 +380,10 @@ class Ui_mainWindow(object):
         self.retranslateUi(mainWindow)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
 
-        self.statusbar.showMessage("상태 : 정상")
 
+        self.label_logo = QtWidgets.QLabel(self.horizontalFrame)
+        self.label_logo.setGeometry(435, 5, 81, 43)
+        self.label_logo.setObjectName("label_logo")
         ######################################################################
         self.display_items_company()
         self.tableWidget.cellClicked.connect(self.display_items_product)
@@ -415,7 +414,31 @@ class Ui_mainWindow(object):
         self.pushButton_71.clicked.connect(self.modify_opt2)
         self.pushButton_72.clicked.connect(self.delete_row_opt2)
         self.pushButton_73.clicked.connect(self.save_opt2)
+        self.tableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.tableWidget.setAlternatingRowColors(True)
 
+        self.tableWidget_2.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.tableWidget_2.setAlternatingRowColors(True)
+
+        self.tableWidget_3.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.tableWidget_3.setAlternatingRowColors(True)
+
+        self.tableWidget_4.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.tableWidget_4.setAlternatingRowColors(True)
+
+        self.tableWidget_5.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.tableWidget_5.setAlternatingRowColors(True)
+
+        self.tableWidget_6.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.tableWidget_6.setAlternatingRowColors(True)
+
+        self.tableWidget_7.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.tableWidget_7.setAlternatingRowColors(True)
+
+        qPixmapVar = QPixmap()
+        qPixmapVar.load("logo.png")
+        self.label_logo.setPixmap(qPixmapVar)
+        mainWindow.setWindowIcon(QIcon('icon.ico'))
     def retranslateUi(self, mainWindow):
         _translate = QtCore.QCoreApplication.translate
         mainWindow.setWindowTitle(_translate("mainWindow", "품목분류코드 생성기"))
@@ -428,7 +451,7 @@ class Ui_mainWindow(object):
         self.label_7.setText(_translate("mainWindow", "옵션2"))
         self.label_8.setText(_translate("mainWindow", "품목 코드"))
         self.label_9.setText(_translate("mainWindow", "품목명 코드"))
-        self.pushButton.setText(_translate("mainWindow", "xlsx 파일 열기"))
+        self.pushButton.setText(_translate("mainWindow", "엑셀 파일 열기"))
         self.pushButton_3.setText(_translate("mainWindow", "수정 모드 꺼짐"))
         self.pushButton_11.setText(_translate("mainWindow", "수정"))
         self.pushButton_12.setText(_translate("mainWindow", "삭제"))
@@ -1216,10 +1239,10 @@ class Ui_mainWindow(object):
 
     def open_button_event(self, bool):
         if bool:
-            csvindex = self.comboBox.currentIndex() - 1
+            xlsxindex = self.comboBox.currentIndex() - 1
             os.startfile(list_xlsx_name[xlsxindex])
-            status = str(list_xlsx_name[xlsxindex]) + " 여는 중."
-            self.statusbar.showMessage(status)
+
+
 
     def xlsx_list(self, MainWindow):
 
@@ -1246,7 +1269,12 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     #app.setAttribute(QtCore.Qt.AA_EnableHigwhDpiScaling, True)  # enable highdpi scaling
     #app.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
-    apply_stylesheet(app,theme = 'light_blue.xml',invert_secondary=True)
+    extra = {
+
+        # Density Scale
+        'density_scale': '-2',
+    }
+    apply_stylesheet(app, 'light_blue.xml', invert_secondary=True, extra=extra)
     mainWindow = QtWidgets.QMainWindow()
     ui = Ui_mainWindow()
     ui.setupUi(mainWindow)
