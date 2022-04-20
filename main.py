@@ -5,6 +5,10 @@ from PyQt5.QtWidgets import QTableWidgetItem, QAbstractItemView
 from PyQt5.QtGui import QPixmap, QIcon
 from qt_material import apply_stylesheet
 
+global backup_company, backup_product, backup_main, backup_main, backup_mid, backup_sub, backup_opt1, backup_opt2
+global company, product, main, mid, sub, opt1, opt2
+global code_log, code_name_log, code_log_reset, list_xlsx_name, list_option
+
 os.environ['QT_API'] = 'pyqt5'
 
 os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
@@ -615,7 +619,7 @@ class Ui_mainWindow(object):
             if self.tableWidget_6.item(row, 1) != self.tableWidget99.item(1, 1):
                 self.code_name_logging(6,self.tableWidget_6.item(row, 1).text())
                 self.code_logging(6,self.tableWidget_6.item(row, 0).text())
-                opt2 = pd.read_excel("Options1.xlsx", index_col=0)
+                opt2 = pd.read_excel("Options2.xlsx", index_col=0)
                 self.cleaner_combobox_tableWidget(7)
                 opt2_selected = opt2.loc[opt2['회사'] == code_log[0]]
                 opt2_selected = opt2_selected.loc[opt2_selected['품목군코드'] == code_log[1]]
@@ -678,8 +682,12 @@ class Ui_mainWindow(object):
         new_df = pd.read_excel("case.xlsx", index_col=0)
         for i in range(self.tableWidget.rowCount()):
             if self.tableWidget.item(i, 0) != self.tableWidget99.item(1, 1):
-                new_df.at[i, '코드'] = self.tableWidget.item(i, 0).text()
-                new_df.at[i, '코드명'] = self.tableWidget.item(i, 1).text()
+                try:
+                    new_df.at[i, '코드'] = self.tableWidget.item(i, 0).text()
+                    new_df.at[i, '코드명'] = self.tableWidget.item(i, 1).text()
+                except:
+                    new_df = new_df.drop([new_df.index[i]])
+                    pass
         company = pd.concat([new_df, company])
         company.to_excel("Companies.xlsx")
         company = pd.read_excel("Companies.xlsx", index_col = 0)
@@ -731,9 +739,13 @@ class Ui_mainWindow(object):
         new_df = pd.read_excel("case.xlsx", index_col=0)
         for i in range(self.tableWidget_2.rowCount()):
             if self.tableWidget_2.item(i, 0) != self.tableWidget99.item(1, 1):
-                new_df.at[i, '코드'] = self.tableWidget_2.item(i, 0).text()
-                new_df.at[i, '코드명'] = self.tableWidget_2.item(i, 1).text()
-                new_df.at[i, '회사'] = code_log[0]
+                try:
+                    new_df.at[i, '코드'] = self.tableWidget_2.item(i, 0).text()
+                    new_df.at[i, '코드명'] = self.tableWidget_2.item(i, 1).text()
+                    new_df.at[i, '회사'] = code_log[0]
+                except:
+                    new_df = new_df.drop([new_df.index[i]])
+                    pass
         product = pd.concat([new_df, product])
         product.to_excel("Products.xlsx")
         product = pd.read_excel("Products.xlsx", index_col = 0)
@@ -787,10 +799,14 @@ class Ui_mainWindow(object):
         new_df = pd.read_excel("case.xlsx", index_col=0)
         for i in range(self.tableWidget_3.rowCount()):
             if self.tableWidget_3.item(i, 0) != self.tableWidget99.item(1, 1):
-                new_df.at[i, '코드'] = self.tableWidget_3.item(i, 0).text()
-                new_df.at[i, '코드명'] = self.tableWidget_3.item(i, 1).text()
-                new_df.at[i, '회사'] = code_log[0]
-                new_df.at[i, '품목군코드'] = code_log[1]
+                try:
+                    new_df.at[i, '코드'] = self.tableWidget_3.item(i, 0).text()
+                    new_df.at[i, '코드명'] = self.tableWidget_3.item(i, 1).text()
+                    new_df.at[i, '회사'] = code_log[0]
+                    new_df.at[i, '품목군코드'] = code_log[1]
+                except:
+                    new_df = new_df.drop([new_df.index[i]])
+                    pass
         main = pd.concat([new_df, main])
         main.to_excel("MainCategory.xlsx")
         main = pd.read_excel("MainCategory.xlsx", index_col=0)
@@ -845,11 +861,15 @@ class Ui_mainWindow(object):
         new_df = pd.read_excel("case.xlsx", index_col=0)
         for i in range(self.tableWidget_4.rowCount()):
             if self.tableWidget_4.item(i, 0) != self.tableWidget99.item(1, 1):
-                new_df.at[i, '코드'] = self.tableWidget_4.item(i, 0).text()
-                new_df.at[i, '코드명'] = self.tableWidget_4.item(i, 1).text()
-                new_df.at[i, '회사'] = code_log[0]
-                new_df.at[i, '품목군코드'] = code_log[1]
-                new_df.at[i, '대분류코드'] = code_log[2]
+                try:
+                    new_df.at[i, '코드'] = self.tableWidget_4.item(i, 0).text()
+                    new_df.at[i, '코드명'] = self.tableWidget_4.item(i, 1).text()
+                    new_df.at[i, '회사'] = code_log[0]
+                    new_df.at[i, '품목군코드'] = code_log[1]
+                    new_df.at[i, '대분류코드'] = code_log[2]
+                except:
+                    new_df = new_df.drop([new_df.index[i]])
+                    pass
         mid = pd.concat([new_df, mid])
         mid.to_excel("MiddleCategory.xlsx")
         mid = pd.read_excel("MiddleCategory.xlsx", index_col=0)
@@ -904,12 +924,16 @@ class Ui_mainWindow(object):
         new_df = pd.read_excel("case.xlsx", index_col=0)
         for i in range(self.tableWidget_5.rowCount()):
             if self.tableWidget_5.item(i, 0) != self.tableWidget99.item(1, 1):
-                new_df.at[i, '코드'] = self.tableWidget_5.item(i, 0).text()
-                new_df.at[i, '코드명'] = self.tableWidget_5.item(i, 1).text()
-                new_df.at[i, '회사'] = code_log[0]
-                new_df.at[i, '품목군코드'] = code_log[1]
-                new_df.at[i, '대분류코드'] = code_log[2]
-                new_df.at[i, '중분류코드'] = code_log[3]
+                try:
+                    new_df.at[i, '코드'] = self.tableWidget_5.item(i, 0).text()
+                    new_df.at[i, '코드명'] = self.tableWidget_5.item(i, 1).text()
+                    new_df.at[i, '회사'] = code_log[0]
+                    new_df.at[i, '품목군코드'] = code_log[1]
+                    new_df.at[i, '대분류코드'] = code_log[2]
+                    new_df.at[i, '중분류코드'] = code_log[3]
+                except:
+                    new_df = new_df.drop([new_df.index[i]])
+                    pass
         sub = pd.concat([new_df, sub])
         sub.to_excel("SubCategory.xlsx")
         sub = pd.read_excel("SubCategory.xlsx", index_col=0)
@@ -967,13 +991,17 @@ class Ui_mainWindow(object):
         new_df = pd.read_excel("case.xlsx", index_col=0)
         for i in range(self.tableWidget_6.rowCount()):
             if self.tableWidget_6.item(i, 0) != self.tableWidget99.item(1, 1):
-                new_df.at[i, '코드'] = self.tableWidget_6.item(i, 0).text()
-                new_df.at[i, '코드명'] = self.tableWidget_6.item(i, 1).text()
-                new_df.at[i, '회사'] = code_log[0]
-                new_df.at[i, '품목군코드'] = code_log[1]
-                new_df.at[i, '대분류코드'] = code_log[2]
-                new_df.at[i, '중분류코드'] = code_log[3]
-                new_df.at[i, '소분류코드'] = code_log[4]
+                try:
+                    new_df.at[i, '코드'] = self.tableWidget_6.item(i, 0).text()
+                    new_df.at[i, '코드명'] = self.tableWidget_6.item(i, 1).text()
+                    new_df.at[i, '회사'] = code_log[0]
+                    new_df.at[i, '품목군코드'] = code_log[1]
+                    new_df.at[i, '대분류코드'] = code_log[2]
+                    new_df.at[i, '중분류코드'] = code_log[3]
+                    new_df.at[i, '소분류코드'] = code_log[4]
+                except:
+                    new_df = new_df.drop([new_df.index[i]])
+                    pass
         opt1 = pd.concat([new_df, opt1])
         opt1.to_excel("Options1.xlsx")
         opt1 = pd.read_excel("Options1.xlsx", index_col=0)
@@ -1031,14 +1059,18 @@ class Ui_mainWindow(object):
         new_df = pd.read_excel("case.xlsx", index_col=0)
         for i in range(self.tableWidget_7.rowCount()):
             if self.tableWidget_7.item(i, 0) != self.tableWidget99.item(1, 1):
-                new_df.at[i, '코드'] = self.tableWidget_7.item(i, 0).text()
-                new_df.at[i, '코드명'] = self.tableWidget_7.item(i, 1).text()
-                new_df.at[i, '회사'] = code_log[0]
-                new_df.at[i, '품목군코드'] = code_log[1]
-                new_df.at[i, '대분류코드'] = code_log[2]
-                new_df.at[i, '중분류코드'] = code_log[3]
-                new_df.at[i, '소분류코드'] = code_log[4]
-                new_df.at[i, '옵션1'] = code_log[5]
+                try:
+                    new_df.at[i, '코드'] = self.tableWidget_7.item(i, 0).text()
+                    new_df.at[i, '코드명'] = self.tableWidget_7.item(i, 1).text()
+                    new_df.at[i, '회사'] = code_log[0]
+                    new_df.at[i, '품목군코드'] = code_log[1]
+                    new_df.at[i, '대분류코드'] = code_log[2]
+                    new_df.at[i, '중분류코드'] = code_log[3]
+                    new_df.at[i, '소분류코드'] = code_log[4]
+                    new_df.at[i, '옵션1'] = code_log[5]
+                except:
+                    new_df = new_df.drop([new_df.index[i]])
+                    pass
         opt2 = pd.concat([new_df, opt2])
         opt2.to_excel("Options2.xlsx")
         opt2 = pd.read_excel("Options2.xlsx", index_col=0)
@@ -1255,9 +1287,7 @@ class Ui_mainWindow(object):
 if __name__ == "__main__":
     import sys
 
-    global backup_company, backup_product, backup_main, backup_main, backup_mid, backup_sub, backup_opt1, backup_opt2
-    global company, product, main, mid, sub, opt1, opt2
-    global code_log, code_name_log, code_log_reset, list_xlsx_name, list_option
+    
     code_log = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
     code_log_reset = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
     code_name_log = [' ', ' ', ' ', ' ', ' ', ' ', ' ']
